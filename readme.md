@@ -24,7 +24,7 @@ All the basics
 ---
 # My Awesome
 ## Libs
-1. (Auth lib for nuxt3 / authjs-nuxt.pages.dev)[https://authjs-nuxt.pages.dev/]
+1. [Auth lib for nuxt3 / authjs-nuxt.pages.dev](https://authjs-nuxt.pages.dev/)
 
 ---
 # References
