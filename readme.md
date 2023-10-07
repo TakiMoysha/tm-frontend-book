@@ -1,6 +1,9 @@
-## Base
+# About
 
-All the basics
+Repository for collecting knowledge about vue and nuxt.
+
+# Structure
+## Base
 
 ## Advanced
 
