@@ -20,7 +20,6 @@ onMounted(() => {
     const rgb = hex.map((byte: string) => parseInt(byte, 16));
     if (rgb.length === 3) alice.color = bob.color = rgb as RGB;
   };
-
 });
 </script>
 
