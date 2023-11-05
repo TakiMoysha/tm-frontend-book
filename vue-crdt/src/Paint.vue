@@ -1,28 +1,26 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import { type RGB } from "./types";
+import { PixelEditor } from "./PixelEditor";
 
 const acanvas = ref();
 const bcanvas = ref();
 const palette = ref();
 
 const artboardSize = { w: 100, h: 100 };
+onMounted(() => {
+  const alice = new PixelEditor(acanvas.value, artboardSize);
+  const bob = new PixelEditor(bcanvas.value, artboardSize);
 
-// const alice = new PixelEditor(acanvas, artboardSize);
-// const bob = new PixelEditor(bcanvas, artboardSize);
+  acanvas.value.onchange = (state: any) => bob.receive(state);
+  bcanvas.value.onchange = (state: any) => alice.receive(state);
 
-function changePaletteColor() {
-  palette.oninput = () => {
-    const hex = palette.value.substring(1).match(/[\da-f]{2}/g) || [];
-    const rgb = hex.map((byte) => parseInt(byte, 16));
+  palette.value.oninput = () => {
+    const hex = palette.value.value.substring(1).match(/[\da-f]{2}/g) || [];
+    const rgb = hex.map((byte: string) => parseInt(byte, 16));
     if (rgb.length === 3) alice.color = bob.color = rgb as RGB;
   };
-};
 
-onMounted(() => {
-  // acanvas.onchange = (state) => bob.receive(state);
-  acanvas.onchange = (state) => console.warn(state);
-  // bcanvas.onchange = (state) => alice.receive(state);
-  bcanvas.onchange = (state) => console.warn(state);
 });
 </script>
 
@@ -33,7 +31,7 @@ onMounted(() => {
       <canvas class="canvas" ref="bcanvas"></canvas>
     </div>
 
-    <input @change="changePaletteColor" class="color" ref="palette" type="color" value="#ff0000" />
+    <input class="color" ref="palette" type="color" value="#ff0000" />
   </div>
 </template>
 

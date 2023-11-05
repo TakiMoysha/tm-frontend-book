@@ -1,12 +1,11 @@
+import { type RGB } from "./types.js"
 import { LWWMap } from "./scratch.js"
 
-type RGB = [red: number, green: number, blue: number];
-
-class PixelData {
+export class PixelData {
   readonly id: string;
   private data: LWWMap<RGB>;
 
-  constructor(id: string) {
+  constructor(id: string = "") {
     this.id = id;
     this.data = new LWWMap(this.id, {});
   }
