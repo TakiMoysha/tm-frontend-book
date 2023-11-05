@@ -10,11 +10,6 @@ const palette = ref();
 const artboardSize = { w: 100, h: 100 };
 
 onMounted(() => {
-  (acanvas.value as HTMLCanvasElement).onchange = (state: any) =>
-    bob.receive(state);
-  (bcanvas.value as HTMLCanvasElement).onchange = (state: any) =>
-    alice.receive(state);
-
   const alice = new PixelEditor(acanvas.value, artboardSize);
   const bob = new PixelEditor(bcanvas.value, artboardSize);
 
@@ -24,6 +19,9 @@ onMounted(() => {
     if (rgb.length === 3) alice.color = bob.color = rgb as RGB;
     console.log("\nrgb: ", rgb, "\nhex: ", hex);
   };
+
+  alice.onchange = (state: any) => bob.receive(state);
+  bob.onchange = (state: any) => alice.receive(state);
 });
 </script>
 
