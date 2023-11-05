@@ -8,6 +8,10 @@ export class PixelEditor {
   private _data = new PixelData();
   private _color: RGB = [0, 0, 0];
   private _listeners: Array<(state: PixelData["state"]) => void> = [];
+
+  #prev: [x: number, y: number] | undefined;
+  #painted = new Set<string>();
+
   constructor(el: HTMLCanvasElement, artboard: { w: number; h: number }) {
     this._el = el;
 
@@ -27,7 +31,9 @@ export class PixelEditor {
     this._ctx.imageSmoothingEnabled = false;
   }
 
-  set onchange(listener: (state: PixelData["state"]) => void) { }
+  set onchange(listener: (state: PixelData["state"]) => void) {
+    this._listeners.push(listener);
+  }
 
   set color(color: RGB) {
     this._color = color;
@@ -49,11 +55,14 @@ export class PixelEditor {
         );
 
         this.paint(x, y);
+        this.#prev = [x, y];
         break;
       }
 
       case "pointerup": {
         this._el.releasePointerCapture(e.pointerId);
+        this.#prev = undefined;
+        this.#painted.clear();
         break;
       }
     }
@@ -63,8 +72,27 @@ export class PixelEditor {
     if (x < 0 || this._artboard.w <= x || y < 0 || this._artboard.h <= y) {
       return;
     }
-    this._data.set(x, y, this._color);
+
+    if (!this.#checkPainted(x, y)) this._data.set(x, y, this._color);
+
+    let [x0, y0] = this.#prev || [x, y];
+    const dx = x - x0,
+      dy = y - y0;
+
+    const steps = Math.max(Math.abs(dx), Math.abs(dy));
+    const xinc = dx / steps,
+      yinc = dy / steps;
+
+    for (let i = 0; i < steps; i++) {
+      x0 += xinc;
+      y0 += yinc;
+      const x1 = Math.round(x0);
+      const y1 = Math.round(y0);
+      if (!this.#checkPainted(x1, y1)) this._data.set(x1, y1, this._color);
+    }
+
     this.draw();
+    this.notify();
   }
 
   private async draw() {
@@ -89,12 +117,29 @@ export class PixelEditor {
     }
     const data = new ImageData(buffer, this._artboard.w, this._artboard.h);
     const bitmap = await createImageBitmap(data);
-    this._ctx.drawImage(bitmap, 0, 0, this._el.clientWidth, this._el.clientHeight);
+    this._ctx.drawImage(
+      bitmap,
+      0,
+      0,
+      this._el.clientWidth,
+      this._el.clientHeight,
+    );
   }
 
-  private notify() { }
+  private notify() {
+    const state = this._data.state;
+    for (const listener of this._listeners) listener(state);
+  }
 
   receive(state: PixelData["state"]) {
-    console.log("Received state", state);
+    this._data.merge(state);
+    this.draw();
+  }
+
+  #checkPainted(x: number, y: number) {
+    const key = PixelData.key(x, y);
+    const painted = this.#painted.has(key);
+    this.#painted.add(key);
+    return painted;
   }
 }

@@ -8,17 +8,21 @@ const bcanvas = ref();
 const palette = ref();
 
 const artboardSize = { w: 100, h: 100 };
+
 onMounted(() => {
+  (acanvas.value as HTMLCanvasElement).onchange = (state: any) =>
+    bob.receive(state);
+  (bcanvas.value as HTMLCanvasElement).onchange = (state: any) =>
+    alice.receive(state);
+
   const alice = new PixelEditor(acanvas.value, artboardSize);
   const bob = new PixelEditor(bcanvas.value, artboardSize);
 
-  acanvas.value.onchange = (state: any) => bob.receive(state);
-  bcanvas.value.onchange = (state: any) => alice.receive(state);
-
-  palette.value.oninput = () => {
+  palette.value.onchange = () => {
     const hex = palette.value.value.substring(1).match(/[\da-f]{2}/g) || [];
     const rgb = hex.map((byte: string) => parseInt(byte, 16));
     if (rgb.length === 3) alice.color = bob.color = rgb as RGB;
+    console.log("\nrgb: ", rgb, "\nhex: ", hex);
   };
 });
 </script>
