@@ -1,15 +1,14 @@
 # About
-
 Repository for collecting knowledge about vue and nuxt.
 
-# Structure
-## Base
+# Started
+- [] CompositionAPI
+- [] Migrations from base to Advanced
+- [] Working with complex vue features.
+- [] Nuxt
+- [] Server-Side Rendering
 
-## Advanced
-
-- Composition API
-- Migrations from base to Advanced
-- working with complex vue features.
+## More
 
 ### Composition API
 
