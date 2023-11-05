@@ -1,6 +1,10 @@
 # About
 Repository for collecting knowledge about vue and nuxt.
 
+* **vue-app-simple** - Simple vue app
+* **vue-app-ts** - Typing vue project
+* **vue-crdt** - Conflict-free Replicated Data Type
+
 # Started
 - [] CompositionAPI
 - [] Migrations from base to Advanced
