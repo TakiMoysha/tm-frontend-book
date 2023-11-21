@@ -1,10 +1,16 @@
 <script setup lang="ts">
-import Signup from './Signup.vue'
+import Signup from "./Signup.vue";
+import { ref } from "vue";
+const result = ref(null);
 </script>
 
 <template>
   <div class="container">
-    <Signup />
+    <Signup v-model="result" />
+
+    <div class="text-warning" v-show="result">
+      {{ result }}
+    </div>
   </div>
 </template>
 
