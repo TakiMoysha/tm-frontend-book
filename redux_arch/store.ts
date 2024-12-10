@@ -1,54 +1,50 @@
-type Actions = "INCREMENT" | "DECREMENT" | "RESET";
-
-interface IStoreAction {
-  type: Actions;
+export interface IStoreReducer<T = any> {
+  reduce(action: string, stateValue: T): T;
 }
 
-interface IStore {
+type FnDispatch = (action: string) => void;
+
+export interface IStore {
   getState: () => IStoreState;
   // call reducer, which process the action and update the state.
-  dispatch: (action: IStoreAction) => void;
+  dispatch: FnDispatch;
 }
 
-interface IStoreState<T = number> {
+export interface IStoreState<T = any> {
   value: T;
 }
 
 export default class Store implements IStore {
-  private defaultState: IStoreState;
-  private state: IStoreState;
+  defaultState: IStoreState;
+  state: IStoreState;
+  reducer: IStoreReducer;
+  middlewareAPI: IStore | undefined;
+  dispatch: FnDispatch;
 
-  constructor(initialState: number) {
+  constructor(reducer: IStoreReducer, initialState: any, middlewares?: any[]) {
     this.defaultState = { value: initialState } as IStoreState;
     this.state = this.defaultState;
-  }
+    this.reducer = reducer;
+    this.dispatch = (action: string): void =>
+      this.reducer.reduce(action, this.state.value);
 
-  getState: () => IStoreState = () => this.state;
-
-  dispatch(action: IStoreAction) {
-    this.state = this.reducer(action, this.state.value);
-  }
-
-  // should check type of state and process the action
-  reducer<T = number>(action: IStoreAction, stateValue: T): IStoreState {
-    switch (action.type) {
-      case "RESET":
-        return this.defaultState;
-      case "INCREMENT":
-        if (typeof stateValue === "number") {
-          return { value: stateValue + 1 };
-        }
-        console.warn("Inappropriate action for type: ", action);
-        return this.state;
-      case "DECREMENT":
-        if (typeof stateValue === "number") {
-          return { value: stateValue - 1 };
-        }
-        console.warn("Inappropriate action for type: ", action);
-        return this.state;
-      default:
-        console.warn("Unknown action: ", action);
-        return this.state;
+    if (middlewares) {
+      const chain: FnDispatch[] = this.applyMiddlewares(middlewares);
+      this.dispatch = this.compose(...chain);
     }
   }
+
+  private applyMiddlewares(middlewares: any[]): any[] {
+    return middlewares.map((middl) => middl(this.middlewareAPI));
+  }
+
+  private compose(...functions: FnDispatch[]) {
+    return functions.reduce(
+      (acc, val) =>
+        (...args: any[]) =>
+          acc(val(...args)),
+    );
+  }
+
+  getState: () => IStoreState<any> = () => this.state;
 }
