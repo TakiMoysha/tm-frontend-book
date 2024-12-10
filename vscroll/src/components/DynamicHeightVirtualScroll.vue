@@ -1,10 +1,43 @@
 <script setup lang="ts">
 import { state } from "@/state";
-import { onMounted, ref, computed, watch, reactive } from "vue";
+import { onMounted, ref, computed, watch, reactive, nextTick } from "vue";
 
 // debug
 const isDebug = ref(true);
 
+function copyEventTargetText(e) {
+  const code = e.target.previousElementSibling;
+  if (!code) return;
+  if (navigator && navigator.clipboard) {
+    // need to check because it's only available on https and localohost
+    navigator.clipboard.writeText(code.innerText);
+  }
+}
+// select only content in container
+
+const addListeners = () => {
+  // const selectableContent = ref<HTMLDivElement>("selectable-content");
+  const selectableContent = document.getElementById("selectable-content");
+  selectableContent?.addEventListener("keydown", (event) => {
+    if (event.key === "a" && event.ctrlKey) {
+      event.preventDefault();
+      copyEventTargetText(event);
+    }
+  });
+
+  // selectableContent.onkeydown = (event) => {
+  //   console.warn("select all");
+  //   if (event.key === "a" && event.ctrlKey) {
+  //     event.preventDefault();
+  //     console.warn("select all");
+  //     const range = document.createRange();
+  //     range.selectNodeContents(selectableContent);
+  //     const selection = window.getSelection();
+  //     selection.removeAllRanges();
+  //     selection.addRange(range);
+  //   }
+  // };
+};
 // props
 const props = defineProps(["title", "reverse"]);
 watch(
@@ -18,7 +51,7 @@ watch(
 // simple vscroll consts
 const getEntryHeight = (index: number) => {
   return 30 + Math.round(Math.random() * 40);
-}
+};
 const overscan = 5;
 const scrollingDelay = 100;
 const estimateEntryHeight = 40;
@@ -39,12 +72,14 @@ const listHeightHook = computed(() => {
     const height =
       entry.borderBoxSize[0]?.blockSize ??
       entry.target.getBoundingClientRect().height;
-    console.debug("dynListHeight: ", height)
+    console.debug("dynListHeight: ", height);
     listHeight.value = height;
   });
 
   resizeObserver.observe(scrollElementRef.value);
-  return () => { resizeObserver.disconnect(); };
+  return () => {
+    resizeObserver.disconnect();
+  };
 });
 const useDynHeight = computed(() => {
   const rangeStart = scrollTop.value;
@@ -56,7 +91,7 @@ const useDynHeight = computed(() => {
 
   const entriesCount = data.length;
   const allEntries = Array(entriesCount);
-  console.log("useDynHeight: ", rangeStart, rangeEnd, entriesCount)
+  console.log("useDynHeight: ", rangeStart, rangeEnd, entriesCount);
   for (let index = 0; index <= entriesCount; index++) {
     const entry = {
       index,
@@ -66,13 +101,13 @@ const useDynHeight = computed(() => {
     totalHeight += entry.height;
     allEntries[index] = entry;
     // start of array
-    
+
     if (isDebug.value) console.log("start: ", entry.offsetTop + entry.height);
     if (startIndex === -1 && entry.offsetTop + entry.height > rangeStart) {
       startIndex = Math.max(0, index - overscan);
     }
     // end of array
-    if (isDebug.value) console.log("end: ", entry.offsetTop + entry.height); 
+    if (isDebug.value) console.log("end: ", entry.offsetTop + entry.height);
     if (endIndex === -1 && entry.offsetTop + entry.height >= rangeEnd) {
       endIndex = Math.min(entriesCount - 1, index + overscan);
     }
@@ -106,18 +141,31 @@ const handleScroll = () => {
     state.debugValue["isScrolling"] = false;
   }, scrollingDelay);
 };
+
+onMounted(() => {
+  nextTick();
+  addListeners();
+});
 </script>
 
 <template>
   <div>
     <h2>{{ props.title }}</h2>
-    <div class="table-responsive-lg" ref="scrollElementRef" @scroll="handleScroll" :style="{
-      height: '60vh',
-      overflow: 'auto',
-      border: '1px inset black',
-    }">
+    <div
+      class="table-responsive-lg"
+      ref="scrollElementRef"
+      @scroll="handleScroll"
+      :style="{
+        height: '60vh',
+        overflow: 'auto',
+        border: '1px inset black',
+      }"
+    >
       <div :style="{ height: useDynHeight.totalHeight + 'px' }">
-        <table class="table table-striped table-sm" style="position: sticky; top: 0px">
+        <table
+          class="table table-striped table-sm"
+          style="position: sticky; top: 0px"
+        >
           <thead>
             <tr>
               <th scope="col">Id</th>
@@ -140,7 +188,7 @@ const handleScroll = () => {
         </table>
       </div>
     </div>
-    <div v-show="isDebug">
+    <div v-show="isDebug" ref="selectable-content" id="selectable-content">
       <p>{{ useDynHeight.totalHeight }}</p>
       <p>{{ useDynHeight.virtualEntries }}</p>
       <p>{{ listHeight }}</p>

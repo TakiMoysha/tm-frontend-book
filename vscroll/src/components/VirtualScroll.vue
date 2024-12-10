@@ -61,7 +61,7 @@ const handleScroll = () => {
   scrollingTimeoutId = setTimeout(() => {
     isScrolling.value = false;
     state.debugValue["isScrolling"] = false;
-  }, scrollingDelay); 
+  }, scrollingDelay);
 };
 </script>
 
@@ -85,8 +85,7 @@ const handleScroll = () => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="prx of proxyEntriesToRender" :key="prx.index"
-              style="{ height: itemHeight + 'px'}">
+            <tr v-for="prx of proxyEntriesToRender" :key="prx.index" style="{ height: itemHeight + 'px'}">
               <template v-if="isScrolling">
                 <td v-if="isScrolling">Scrolling...</td>
                 <td v-if="isScrolling"></td>
