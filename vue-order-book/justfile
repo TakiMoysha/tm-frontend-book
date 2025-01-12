@@ -1,0 +1,20 @@
+new-page name:
+  npx nuxi add page {{name}}
+
+new-component name:
+  npx nuxi add component {{name}}
+
+new-composable name:
+  npx nuxi add composable {{name}}
+
+new-layout name:
+  npx nuxi add layout {{name}}
+
+new-layer name:
+  npx nuxi add layer {{name}}
+
+new-middleware name:
+  npx nuxi add middleware {{name}}
+
+new-api name:
+  npx add api {{name}}
