@@ -1,6 +1,9 @@
 dev:
   bun dev --host
 
+pure-dev: cleanup
+  bun dev --host
+
 test:
   bun test
 
@@ -30,3 +33,6 @@ new-middleware name:
 
 new-api name:
   npx add api {{name}}
+
+cleanup:
+  npx nuxi cleanup

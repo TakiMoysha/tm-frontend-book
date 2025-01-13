@@ -1,9 +1,31 @@
 export default defineNuxtConfig({
-  compatibilityDate: '2024-11-01',
+  compatibilityDate: "2024-11-01",
+  experimental: {
+    renderJsonPayloads: false,
+  },
   devtools: { enabled: true },
   modules: [
     "@nuxt/image",
     "@nuxtjs/tailwindcss",
+    "@nuxtjs/color-mode",
+    "shadcn-nuxt",
+    [
+      "@nuxtjs/google-fonts",
+      {
+        families: {
+          Inter: [400, 500, 600, 700],
+          Roboto: [400, 500, 700],
+        },
+      },
+    ],
+    "@nuxt/icon",
   ],
-  tailwindcss: {}
-})
+  colorMode: {
+    preference: "dark",
+  },
+  tailwindcss: {},
+  shadcn: {
+    prefix: "Ui",
+    componentDir: "./components/ui/",
+  },
+});

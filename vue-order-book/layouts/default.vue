@@ -2,9 +2,9 @@
 
 <template>
   <section class="main-layout" style="min-height: 99.9vh">
-    <layout-sidebar></layout-sidebar>
+    <LayoutSidebar></LayoutSidebar>
 
-    <main style="background-color: #fff444">
+    <main>
       <slot />
     </main>
   </section>
