@@ -1,5 +1,3 @@
-import Default from "./layouts/default.vue";
-
 const animate = require("tailwindcss-animate");
 
 /** @type {import('tailwindcss').Config} */
