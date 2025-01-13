@@ -1,3 +1,5 @@
+import Default from "./layouts/default.vue";
+
 const animate = require("tailwindcss-animate");
 
 /** @type {import('tailwindcss').Config} */
@@ -79,6 +81,12 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
         "collapsible-down": "collapsible-down 0.2s ease-in-out",
         "collapsible-up": "collapsible-up 0.2s ease-in-out",
+      },
+      transitionTimingFunction: {
+        DEFAULT: "ease-in-out",
+      },
+      transitionDuration: {
+        DEFAULT: "333ms",
       },
     },
   },
