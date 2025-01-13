@@ -23,7 +23,9 @@ export default defineNuxtConfig({
   colorMode: {
     preference: "dark",
   },
-  tailwindcss: {},
+  tailwindcss: {
+    cssPath: "~/assets/css/tailwind.css",
+  },
   shadcn: {
     prefix: "Ui",
     componentDir: "./components/ui/",

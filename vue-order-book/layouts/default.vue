@@ -1,17 +1,17 @@
 <script setup lang="ts"></script>
 
 <template>
-  <section class="main-layout" style="min-height: 99.9vh">
+  <section class="layout-grid" style="min-height: 99.9vh">
     <LayoutSidebar></LayoutSidebar>
 
-    <main>
+    <div class="wrapper-layout">
       <slot />
-    </main>
+    </div>
   </section>
 </template>
 
 <style scoped>
-.main-layout {
+.layout-grid {
   display: grid;
   grid-template-columns: 1fr 6fr;
 }

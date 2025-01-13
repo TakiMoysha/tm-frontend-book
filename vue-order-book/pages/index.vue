@@ -1,17 +1,13 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="container">
     <div class="wrapper">
-      <Header></Header>
-      <SideBar></SideBar>
+      <!-- <Header></Header> -->
+      <!-- <SideBar></SideBar> -->
     </div>
 
-    <main id="main">
-      <OrderBook></OrderBook>
-    </main>
+    <main id="main"></main>
   </div>
 </template>
 

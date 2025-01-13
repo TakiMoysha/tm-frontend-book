@@ -1,35 +1,17 @@
+<script setup lang="ts">
+import Menu from "./Menu.vue";
+import DebugButtons from "./DebugButtons.vue";
+</script>
+
 <template>
   <div class="px-5 py-8 bg-sidebar h-full relative w-full border-r-4">
     <NuxtLink to="/" class="mb-10 block">
-      <NuxtImg
-        src="/logo.svg"
-        alt="logo"
-        width="100px"
-        class="mx-auto filtered-logo"
-      />
+      <NuxtImg src="/logo.svg" alt="logo" width="180px" class="mx-auto filtered-logo" />
     </NuxtLink>
 
-    <div class="flex flex-col gap-2">
-      <UiButton class="text-sm">
-        <Icon name="line-md:github" />
-        Small Button
-      </UiButton>
+    <Menu></Menu>
 
-      <UiButton>
-        <Icon name="line-md:github" />
-        Default Button
-      </UiButton>
-
-      <UiButton class="text-md">
-        <Icon name="line-md:home" />
-        Medium Button
-      </UiButton>
-
-      <UiButton class="text-lg">
-        <Icon name="line-md:logout" />
-        Large Button
-      </UiButton>
-    </div>
+    <DebugButtons></DebugButtons>
   </div>
 </template>
 
