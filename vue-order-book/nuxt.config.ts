@@ -1,5 +1,11 @@
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
+  runtimeConfig: {
+    public: {
+      APP_WRITE_PROJECT_ID: process.env.APP_WRITE_PROJECT_ID,
+    }
+
+  },
   experimental: {
     renderJsonPayloads: false,
   },

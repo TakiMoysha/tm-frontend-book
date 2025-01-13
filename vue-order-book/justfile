@@ -1,8 +1,8 @@
 dev:
-  bun dev --host
+  bun dev --host --dotenv .env
 
 pure-dev: cleanup
-  bun dev --host
+  bun dev --host --dotenv .env
 
 test:
   bun test

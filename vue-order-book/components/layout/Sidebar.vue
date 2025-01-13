@@ -11,6 +11,8 @@ import DebugButtons from "./DebugButtons.vue";
 
     <Menu></Menu>
 
+    <br />
+
     <DebugButtons></DebugButtons>
   </div>
 </template>
