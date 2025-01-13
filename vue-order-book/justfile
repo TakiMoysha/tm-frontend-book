@@ -1,3 +1,15 @@
+dev:
+  bun dev --host
+
+test:
+  bun test
+
+install:
+  bun install
+
+build: install
+  bun --bun run build 
+
 new-page name:
   npx nuxi add page {{name}}
 
