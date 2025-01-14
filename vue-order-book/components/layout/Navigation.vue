@@ -1,5 +1,8 @@
 <script setup lang="ts">
 const MENU_DATA = [
+  { name: "Sign In", url: "/auth/sign-in", icon: "line-md:login" },
+  { name: "Sign Up", url: "/auth/sign-up", icon: "line-md:account-add" },
+  { name: "Error:Not Found", url: "/error/not-found-page", icon: "line-md:alert" },
   { name: "Home", url: "/", icon: "line-md:home" },
   { name: "Book", url: "/", icon: "line-md:clipboard" },
   { name: "About", url: "/", icon: "line-md:emoji-neutral-filled" },
@@ -17,4 +20,5 @@ const MENU_DATA = [
     </NuxtLink>
   </div>
 </template>
+
 <style scoped></style>

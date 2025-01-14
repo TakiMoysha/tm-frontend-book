@@ -15,6 +15,7 @@
     "@nuxtjs/google-fonts": "^3.2.0",
     "@nuxtjs/tailwindcss": "^6.13.0",
     "@radix-icons/vue": "^1.0.0",
+    "@vueuse/core": "^12.4.0",
     "appwrite": "^16.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -26,7 +27,10 @@
     "vue-router": "latest"
   },
   "devDependencies": {
+    "@nuxt/test-utils": "^3.15.4",
     "@nuxtjs/color-mode": "^3.5.2",
-    "shadcn-nuxt": "^0.11.3"
+    "@vue/test-utils": "^2.4.6",
+    "shadcn-nuxt": "^0.11.3",
+    "vitest": "^2.1.8"
   }
 }

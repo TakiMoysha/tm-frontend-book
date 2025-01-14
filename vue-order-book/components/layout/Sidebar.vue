@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import Menu from "./Menu.vue";
+import Navigation from "./Navigation.vue";
 import DebugButtons from "./DebugButtons.vue";
+import ThemeSwitcher from "./ThemeSwitcher.vue";
 </script>
 
 <template>
@@ -9,17 +10,19 @@ import DebugButtons from "./DebugButtons.vue";
       <NuxtImg src="/logo.svg" alt="logo" width="180px" class="mx-auto filtered-logo" />
     </NuxtLink>
 
-    <Menu></Menu>
+    <Navigation></Navigation>
 
     <br />
 
     <DebugButtons></DebugButtons>
+
+    <br />
+
+    <div class="absolute bottom-5 left-5">
+      <ThemeSwitcher></ThemeSwitcher>
+    </div>
   </div>
 </template>
-
-<script setup lang="ts"></script>
-
-<style scoped></style>
 
 <style scope>
 .filtered-logo {

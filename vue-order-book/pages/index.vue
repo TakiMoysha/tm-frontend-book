@@ -1,14 +1,19 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+
+</script>
 
 <template>
-  <div class="container">
-    <div class="wrapper">
-      <!-- <Header></Header> -->
-      <!-- <SideBar></SideBar> -->
-    </div>
+  <main class="p-10">
+    <h1 class="font-bold text-2xl md-10">Order Book</h1>
 
-    <main id="main"></main>
-  </div>
+    <ColorScheme placeholder="..." tag="span">
+      color mode: <b>{{ $colorMode.preference }}</b>
+      <span v-if="$colorMode.preference === 'system'">
+        {{ $colorMode.value }}
+        (system preference)
+      </span>
+    </ColorScheme>
+  </main>
 </template>
 
 <style scoped></style>

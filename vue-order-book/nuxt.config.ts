@@ -3,8 +3,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       APP_WRITE_PROJECT_ID: process.env.APP_WRITE_PROJECT_ID,
-    }
-
+    },
   },
   experimental: {
     renderJsonPayloads: false,
@@ -15,6 +14,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@nuxtjs/color-mode",
     "shadcn-nuxt",
+    "@nuxt/icon",
     [
       "@nuxtjs/google-fonts",
       {
@@ -24,11 +24,9 @@ export default defineNuxtConfig({
         },
       },
     ],
-    "@nuxt/icon",
+    "@nuxt/test-utils/module",
   ],
-  colorMode: {
-    preference: "dark",
-  },
+
   tailwindcss: {
     cssPath: "~/assets/css/tailwind.css",
   },

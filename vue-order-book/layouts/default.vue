@@ -3,7 +3,7 @@ const aw = useAppWrite();
 </script>
 
 <template>
-  <section class="layout-grid" style="min-height: 99.9vh">
+  <section class="layout-grid dark-mode" style="min-height: 99.9vh">
     <LayoutSidebar></LayoutSidebar>
 
     <div class="wrapper-layout">
