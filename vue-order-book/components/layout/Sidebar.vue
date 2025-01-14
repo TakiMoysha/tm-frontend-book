@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Navigation from "./Navigation.vue";
 import DebugButtons from "./DebugButtons.vue";
-import ThemeSwitcher from "./ThemeSwitcher.vue";
+import LayoutSelector from "../LayoutSelector.vue";
 </script>
 
 <template>
@@ -19,7 +19,7 @@ import ThemeSwitcher from "./ThemeSwitcher.vue";
     <br />
 
     <div class="absolute bottom-5 left-5">
-      <ThemeSwitcher></ThemeSwitcher>
+      <LayoutSelector></LayoutSelector>
     </div>
   </div>
 </template>

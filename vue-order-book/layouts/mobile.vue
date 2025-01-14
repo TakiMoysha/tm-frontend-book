@@ -4,7 +4,7 @@ const aw = useAppWrite();
 
 <template>
   <section class="layout-grid" style="min-height: 99.9vh">
-    <LayoutSidebar></LayoutSidebar>
+    <UiSidebar></UiSidebar>
 
     <div class="wrapper-layout">
       <slot />

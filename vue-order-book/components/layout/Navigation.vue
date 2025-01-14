@@ -1,12 +1,11 @@
 <script setup lang="ts">
 const MENU_DATA = [
-  { name: "Sign In", url: "/auth/sign-in", icon: "line-md:login" },
-  { name: "Sign Up", url: "/auth/sign-up", icon: "line-md:account-add" },
-  { name: "Error:Not Found", url: "/error/not-found-page", icon: "line-md:alert" },
+  { name: "404", url: "/error/not-found", icon: "line-md:alert" },
   { name: "Home", url: "/", icon: "line-md:home" },
   { name: "Book", url: "/", icon: "line-md:clipboard" },
   { name: "About", url: "/", icon: "line-md:emoji-neutral-filled" },
   { name: "Contact", url: "/", icon: "line-md:hazard-lights-filled-loop" },
+  { name: "Authentication", url: "/auth", icon: "line-md:login" },
   { name: "Logout", url: "/", icon: "line-md:logout" },
 ];
 </script>

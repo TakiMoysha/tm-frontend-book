@@ -36,3 +36,6 @@ new-api name:
 
 cleanup:
   npx nuxi cleanup
+
+shadcn-add name:
+  npx shadcn-vue@latest add {{name}}
