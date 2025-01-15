@@ -1,6 +1,6 @@
 import { Client, Account, Databases, Storage, ID } from "appwrite";
 
-export const useAppWrite = async () => {
+const initAppWrite = async () => {
   const config = useRuntimeConfig();
   if (!config.public.APP_WRITE_PROJECT_ID) {
     throw new Error("PROJECT_ID is not set, check environment variables");
@@ -10,11 +10,21 @@ export const useAppWrite = async () => {
     .setEndpoint("https://cloud.appwrite.io/v1")
     .setProject(config.public.APP_WRITE_PROJECT_ID);
 
-  const account = new Account(client);
-  const database = new Databases(client);
-  const storage = new Storage(client);
-
   await client.ping();
+  return client;
+};
 
-  return { account, database, storage, ID };
+let _client: undefined | Client = undefined;
+
+export const useAppWrite = async () => {
+  if (!_client) {
+    console.warn("Appwrite client is not initialized");
+    _client = await initAppWrite();
+  }
+
+  const account = new Account(_client);
+  const database = new Databases(_client);
+  const storage = new Storage(_client);
+
+  return { client: _client, account, database, storage, ID };
 };

@@ -3,7 +3,12 @@ useHead({
   title: "Authentication | Order Book",
 });
 
-const isLoading = ref(false);
+const { isLoading, isLocking } = usePageState();
+
+const singIn = async() => {
+  const { account, } = await useAppWrite();
+}
+
 const usernameInput = ref("");
 const emailInput = ref("");
 const passwordInput = ref("");

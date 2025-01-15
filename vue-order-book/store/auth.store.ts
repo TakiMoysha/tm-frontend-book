@@ -25,4 +25,3 @@ export const useAuthStore = defineStore("auth:user", {
     },
   },
 });
-
