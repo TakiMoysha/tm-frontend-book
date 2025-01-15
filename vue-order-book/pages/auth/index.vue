@@ -10,16 +10,16 @@ const { isLoading, isLocking } = usePageState();
 const isLockButtos = computed(() => isLoading || isLocking);
 const { actions } = await useAppWrite();
 
-const singInHandler = async () => {
+const signInHandler = async () => {
   actions.signIn(emailInput.value, passwordInput.value).then(
     (response) => { },
     (error) => { },
   );
 };
 
-const singUpHandler = async () => {
+const signUpHandler = async () => {
   actions
-    .signUp(usernameInput.value, emailInput.value, passwordInput.value)
+    .signUp(nameInput.value, emailInput.value, passwordInput.value)
     .then(
       (response) => { },
       (error) => { },
@@ -33,7 +33,7 @@ const recoveryHandler = async () => {
   );
 };
 
-const usernameInput = shallowRef("");
+const nameInput = shallowRef("");
 const emailInput = shallowRef("");
 const passwordInput = shallowRef("");
 
@@ -52,13 +52,13 @@ const onSubmit = (event: Event) => {
         <br />
 
         <form>
-          <UiInput placeholder="Username" type="text" class="my-2" :model="usernameInput"></UiInput>
+          <UiInput placeholder="Username" type="text" class="my-2" :model="nameInput"></UiInput>
           <UiInput placeholder="Email" type="email" class="my-2" :model="emailInput"></UiInput>
           <UiInput placeholder="Password" type="password" class="my-2" :model="passwordInput"></UiInput>
           <div class="flex justify-center items-center gap-5">
-            <UiButton type="button" :loading="isLockButtos" onclick="signInHandler">Sign In</UiButton>
-            <UiButton type="button" :loading="isLockButtos" onclick="signUpHandler">Sign Up</UiButton>
-            <UiButton type="button" :loading="isLockButtos" onclick="recoveryHandler">Recovery</UiButton>
+            <UiButton type="button" :loading="isLockButtos" @click="signInHandler">Sign In</UiButton>
+            <UiButton type="button" :loading="isLockButtos" @click="signUpHandler">Sign Up</UiButton>
+            <UiButton type="button" :loading="isLockButtos" @click="recoveryHandler">Recovery</UiButton>
           </div>
         </form>
       </div>

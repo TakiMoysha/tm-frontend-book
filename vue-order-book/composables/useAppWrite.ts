@@ -1,4 +1,5 @@
 import { Client, Account, Databases, Storage, ID } from "appwrite";
+import { v4 } from "uuid";
 
 let client: Client | undefined;
 
@@ -27,8 +28,9 @@ export default async () => {
   const storage = new Storage(client);
 
   const actions = {
-    signUp: (email: string, username: string, password: string) => {
-      return account.create(username, email, password);
+    signUp: (name: string, email: string, password: string) => {
+      const ID = v4();
+      return account.create(ID, email, password, name);
     },
     signIn: (email: string, password: string) => {
       return account.createEmailPasswordSession(email, password);

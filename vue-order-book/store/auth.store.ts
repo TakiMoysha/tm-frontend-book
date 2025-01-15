@@ -1,12 +1,10 @@
-import type { Store } from "pinia";
-
-interface IAuthStore {
+interface IAuthStoreUser {
   email: string;
   name: string;
   isAuth: boolean;
 }
 
-const defaultValue: { user: IAuthStore } = {
+const defaultValue: { user: IAuthStoreUser } = {
   user: {
     email: "",
     name: "",
@@ -23,5 +21,8 @@ export const useAuthStore = defineStore("auth:user", {
     clear() {
       this.$patch(defaultValue);
     },
+    setUser(user: { email: string, name: string }) {
+      this.user = { ...user, isAuth: true };
+    }
   },
 });

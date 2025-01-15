@@ -4,6 +4,7 @@ export default defineNuxtConfig({
     public: {
       APP_WRITE_PROJECT_ID: process.env.APP_WRITE_PROJECT_ID,
       APP_WRITE_DOMAIN: process.env.APP_WRITE_DOMAIN,
+      APP_WRITE_API_KEY: process.env.APP_WRITE_API_KEY,
     },
   },
   experimental: {
