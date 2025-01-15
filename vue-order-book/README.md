@@ -10,6 +10,10 @@ Check nuxi commands [here](https://nuxt.com/docs/api/commands/add).
 
 - for _pages_ and _server/api_ use kebab-case, because that's names used in urls;
 
+## Setup
+
+
+
 ## References
 
 - [Nuxt personal site / TheAlexLichter - lichter.io / github.com](https://github.com/TheAlexLichter/lichter.io/tree/main)

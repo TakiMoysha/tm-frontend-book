@@ -1,6 +1,5 @@
 import { Client, Account, Databases, Storage, ID } from "appwrite";
 
-
 export const useAppWrite = async () => {
   const config = useRuntimeConfig();
   if (!config.public.APP_WRITE_PROJECT_ID) {

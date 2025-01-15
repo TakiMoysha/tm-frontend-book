@@ -4,6 +4,7 @@ useHead({
 });
 
 const isLoading = ref(false);
+const usernameInput = ref("");
 const emailInput = ref("");
 const passwordInput = ref("");
 
@@ -25,24 +26,9 @@ async function onSubmit(event: Event) {
       <br />
 
       <form @submit="onSubmit">
-        <UiInput
-          placeholder="Username"
-          type="text"
-          class="my-2"
-          :model="emailInput"
-        ></UiInput>
-        <UiInput
-          placeholder="Email"
-          type="email"
-          class="my-2"
-          :model="emailInput"
-        ></UiInput>
-        <UiInput
-          placeholder="Password"
-          type="password"
-          class="my-2"
-          :model="passwordInput"
-        ></UiInput>
+        <UiInput placeholder="Username" type="text" class="my-2" :model="usernameInput"></UiInput>
+        <UiInput placeholder="Email" type="email" class="my-2" :model="emailInput"></UiInput>
+        <UiInput placeholder="Password" type="password" class="my-2" :model="passwordInput"></UiInput>
         <div class="flex justify-center items-center gap-5">
           <UiButton type="button" :loading="isLoading">Sign In</UiButton>
           <UiButton type="button" :loading="isLoading">Sign Up</UiButton>
