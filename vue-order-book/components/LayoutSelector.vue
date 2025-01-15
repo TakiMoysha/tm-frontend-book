@@ -10,17 +10,17 @@ type Layouts = "default" | "mobile";
 
 const layout = ref<Layouts>("default");
 
-watch(layout, async (value) => {
-  // setPageLayout(value);
-  await navigateTo("/");
+watch(layout, async (newLayout) => {
+  setPageLayout(newLayout);
 });
 </script>
 
 <template>
   <DevOnly>
     <div class="float float-center">
-      <form id="layout-form">
-        <UiSelect>
+      <div id="layout-form">
+        <label for="layout"></label>
+        <UiSelect id="layout" v-model="layout">
           <UiSelectTrigger class="w-[180px]">
             <UiSelectValue placeholder="Select a layout" />
           </UiSelectTrigger>
@@ -32,7 +32,7 @@ watch(layout, async (value) => {
             </SelectGroup>
           </SelectContent>
         </UiSelect>
-      </form>
+      </div>
     </div>
   </DevOnly>
 </template>
