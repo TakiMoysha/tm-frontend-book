@@ -3,6 +3,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       APP_WRITE_PROJECT_ID: process.env.APP_WRITE_PROJECT_ID,
+      APP_WRITE_DOMAIN: process.env.APP_WRITE_DOMAIN,
     },
   },
   experimental: {
@@ -10,22 +11,15 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true },
   modules: [
+    "shadcn-nuxt",
+    "@pinia/nuxt",
+    "@vee-validate/nuxt",
+    "@nuxt/icon",
     "@nuxt/image",
+    "@nuxt/test-utils/module",
     "@nuxtjs/tailwindcss",
     "@nuxtjs/color-mode",
-    "shadcn-nuxt",
-    "@nuxt/icon",
-    [
-      "@nuxtjs/google-fonts",
-      {
-        families: {
-          Inter: [400, 500, 600, 700],
-          Roboto: [400, 500, 700],
-        },
-      },
-    ],
-    "@nuxt/test-utils/module",
-    "@pinia/nuxt",
+    "@nuxtjs/google-fonts",
   ],
 
   tailwindcss: {
@@ -34,5 +28,20 @@ export default defineNuxtConfig({
   shadcn: {
     prefix: "Ui",
     componentDir: "./components/ui/",
+  },
+  veeValidate: {
+    autoImports: true,
+    componentNames: {
+      Form: "VeeForm",
+      Field: "VeeField",
+      FieldArray: "VeeFieldArray",
+      ErrorMessage: "VeeErrorMessage",
+    },
+  },
+  googleFonts: {
+    families: {
+      Inter: [400, 500, 600, 700],
+      Roboto: [400, 500, 700],
+    },
   },
 });

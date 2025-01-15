@@ -1,30 +1,49 @@
 import { Client, Account, Databases, Storage, ID } from "appwrite";
 
-const initAppWrite = async () => {
+let client: Client | undefined;
+
+const initAppWriteClient = async () => {
   const config = useRuntimeConfig();
   if (!config.public.APP_WRITE_PROJECT_ID) {
     throw new Error("PROJECT_ID is not set, check environment variables");
   }
 
-  const client = new Client()
+  const _client = new Client()
     .setEndpoint("https://cloud.appwrite.io/v1")
     .setProject(config.public.APP_WRITE_PROJECT_ID);
 
-  await client.ping();
-  return client;
+  await _client.ping();
+  return _client;
 };
 
-let _client: undefined | Client = undefined;
-
-export const useAppWrite = async () => {
-  if (!_client) {
-    console.warn("Appwrite client is not initialized");
-    _client = await initAppWrite();
+export default async () => {
+  const config = useRuntimeConfig();
+  if (!client) {
+    client = await initAppWriteClient();
   }
 
-  const account = new Account(_client);
-  const database = new Databases(_client);
-  const storage = new Storage(_client);
+  const account = new Account(client);
+  const database = new Databases(client);
+  const storage = new Storage(client);
 
-  return { client: _client, account, database, storage, ID };
+  const actions = {
+    signUp: (email: string, username: string, password: string) => {
+      return account.create(username, email, password);
+    },
+    signIn: (email: string, password: string) => {
+      return account.createEmailPasswordSession(email, password);
+    },
+    recovery: (email: string) => {
+      return account.createRecovery(email, config.public.APP_WRITE_DOMAIN);
+    },
+  };
+
+  return {
+    ID,
+    client,
+    account,
+    database,
+    storage,
+    actions,
+  };
 };
