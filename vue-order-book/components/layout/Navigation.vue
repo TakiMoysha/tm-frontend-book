@@ -2,7 +2,7 @@
 const MENU_DATA = [
   { name: "404", url: "/error/not-found", icon: "line-md:alert" },
   { name: "Home", url: "/", icon: "line-md:home" },
-  { name: "Book", url: "/", icon: "line-md:clipboard" },
+  { name: "Loading", url: "/loading", icon: "line-md:clipboard" },
   { name: "About", url: "/", icon: "line-md:emoji-neutral-filled" },
   { name: "Contact", url: "/", icon: "line-md:hazard-lights-filled-loop" },
   { name: "Authentication", url: "/auth", icon: "line-md:login" },

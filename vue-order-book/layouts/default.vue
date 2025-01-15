@@ -9,7 +9,6 @@ const authStore = useAuthStore()
 onMounted(async () => {
   try {
     const user = await account.get()
-    console.log("!!!!!!!!!!! user: ", user)
     if (user) authStore.setUser(user)
   } catch (error) {
     router.push("/auth")
@@ -20,7 +19,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section class="layout-grid" style="min-height: 99.9vh">
+  <LayoutLoader v-if="isLoading" />
+
+  <section v-else :class="{ grid: authStore.isAuth }" class="layout-grid" style="min-height: 99.9vh">
     <LayoutSidebar></LayoutSidebar>
 
     <div class="wrapper-page">

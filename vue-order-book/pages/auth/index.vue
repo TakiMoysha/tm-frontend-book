@@ -11,6 +11,7 @@ const isLockButtos = computed(() => isLoading || isLocking);
 const { actions } = await useAppWrite();
 
 const signInHandler = async () => {
+  console.log(emailInput, passwordInput)
   actions.signIn(emailInput.value, passwordInput.value).then(
     (response) => { },
     (error) => { },
@@ -36,11 +37,6 @@ const recoveryHandler = async () => {
 const nameInput = shallowRef("");
 const emailInput = shallowRef("");
 const passwordInput = shallowRef("");
-
-const onSubmit = (event: Event) => {
-  event.preventDefault();
-  console.log("submit");
-};
 </script>
 
 <template>
@@ -52,9 +48,9 @@ const onSubmit = (event: Event) => {
         <br />
 
         <form>
-          <UiInput placeholder="Username" type="text" class="my-2" :model="nameInput"></UiInput>
-          <UiInput placeholder="Email" type="email" class="my-2" :model="emailInput"></UiInput>
-          <UiInput placeholder="Password" type="password" class="my-2" :model="passwordInput"></UiInput>
+          <UiInput placeholder="Username" type="text" class="my-2" v-model="nameInput"></UiInput>
+          <UiInput placeholder="Email" type="email" class="my-2" v-model="emailInput"></UiInput>
+          <UiInput placeholder="Password" type="password" class="my-2" v-model="passwordInput"></UiInput>
           <div class="flex justify-center items-center gap-5">
             <UiButton type="button" :loading="isLockButtos" @click="signInHandler">Sign In</UiButton>
             <UiButton type="button" :loading="isLockButtos" @click="signUpHandler">Sign Up</UiButton>
