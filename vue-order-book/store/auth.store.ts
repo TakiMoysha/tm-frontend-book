@@ -1,28 +1,33 @@
+enum Status {
+  AUTH = 'AUTH',
+  NO_AUTH = 'NO_AUTH',
+}
+
 interface IAuthStoreUser {
   email: string;
   name: string;
-  isAuth: boolean;
+  status: Status;
 }
 
 const defaultValue: { user: IAuthStoreUser } = {
   user: {
-    email: "",
-    name: "",
-    isAuth: false,
+    email: '',
+    name: '',
+    status: Status.NO_AUTH,
   },
 };
 
-export const useAuthStore = defineStore("auth:user", {
+export const useAuthStore = defineStore('auth:user', {
   state: () => defaultValue,
   getters: {
-    isAuth: (state) => state.user.isAuth,
+    isAuth: (state) => state.user.status === Status.AUTH,
   },
   actions: {
     clear() {
       this.$patch(defaultValue);
     },
-    setUser(user: { email: string, name: string }) {
-      this.user = { ...user, isAuth: true };
-    }
+    setUser(user: { email: string; name: string }) {
+      this.user = { ...user, status: Status.AUTH };
+    },
   },
 });

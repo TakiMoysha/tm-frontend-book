@@ -1,4 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+definePageMeta({
+  middleware: ["required-auth"]
+})
+</script>
 
 <template>
   <main class="p-10">

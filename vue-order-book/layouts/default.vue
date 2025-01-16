@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { useAuthStore } from '~/store/auth.store';
 
+defaultPageMeta({
+  middleware: ["auth-required"],
+})
+
 const { account } = await useAppWrite();
 const { isLoading, isLocking } = usePageState();
-const authStore = useAuthStore()
+const authStore = useAuthStore();
 
 onMounted(async () => {
   try {
@@ -20,8 +24,8 @@ onMounted(async () => {
 <template>
   <LayoutLoader v-if="isLoading" />
 
-  <section v-else :class="{ 'layout-grid': authStore.isAuth }" style="min-height: 99.9vh">
-    <LayoutSidebar v-if="authStore.isAuth"></LayoutSidebar>
+  <section v-else :class="{ 'layout-grid': authStore?.isAuth }" style="min-height: 99.9vh">
+    <LayoutSidebar v-if="authStore?.isAuth"></LayoutSidebar>
 
     <div class="wrapper-page">
       <slot />

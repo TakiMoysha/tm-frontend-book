@@ -7,7 +7,6 @@
     </NuxtLayout>
 
     <DevOnly>
-      <DebugMenu />
     </DevOnly>
   </div>
 </template>

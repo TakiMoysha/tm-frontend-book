@@ -1,6 +1,4 @@
-<script setup lang="ts">
-const aw = useAppWrite();
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <section style="min-height: 99.9vh">
