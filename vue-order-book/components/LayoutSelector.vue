@@ -6,9 +6,7 @@ import {
   SelectLabel,
 } from "@/components/ui/select";
 
-type Layouts = "default" | "mobile";
-
-const layout = ref<Layouts>("default");
+const layout = ref<"default" | "blank">("default");
 
 watch(layout, async (newLayout) => {
   setPageLayout(newLayout);

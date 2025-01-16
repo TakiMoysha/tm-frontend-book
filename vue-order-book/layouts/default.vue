@@ -3,7 +3,6 @@ import { useAuthStore } from '~/store/auth.store';
 
 const { account } = await useAppWrite();
 const { isLoading, isLocking } = usePageState();
-const router = useRouter()
 const authStore = useAuthStore()
 
 onMounted(async () => {
@@ -11,7 +10,7 @@ onMounted(async () => {
     const user = await account.get()
     if (user) authStore.setUser(user)
   } catch (error) {
-    router.push("/auth")
+    await navigateTo("/auth")
   } finally {
     isLoading.value = false;
   }
@@ -21,8 +20,8 @@ onMounted(async () => {
 <template>
   <LayoutLoader v-if="isLoading" />
 
-  <section v-else :class="{ grid: authStore.isAuth }" class="layout-grid" style="min-height: 99.9vh">
-    <LayoutSidebar></LayoutSidebar>
+  <section v-else :class="{ 'layout-grid': authStore.isAuth }" style="min-height: 99.9vh">
+    <LayoutSidebar v-if="authStore.isAuth"></LayoutSidebar>
 
     <div class="wrapper-page">
       <slot />

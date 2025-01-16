@@ -1,7 +1,13 @@
 <script setup lang="ts"></script>
 
 <template>
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
+  <div>
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+
+    <DevOnly>
+      <DebugMenu />
+    </DevOnly>
+  </div>
 </template>
