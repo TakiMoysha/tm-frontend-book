@@ -7,10 +7,11 @@ useHead({
 });
 definePageMeta({
   layout: "blank",
+  name: "Authentication",
 })
 
 const query = useRoute().query;
-const { isLoading, isLocking } = usePageState();
+const { isLoading, isLocking } = usePageState(false, false);
 const { actions } = await useAppWrite();
 const isLockButtons = computed(() => isLoading || isLocking);
 
@@ -33,6 +34,9 @@ const signUpHandler = async () => {
 };
 
 const recoveryHandler = async () => {
+  if (!isAcceptTerms) {
+
+  }
   actions
     .recovery(emailInput.value)
     .then(
@@ -142,7 +146,7 @@ const isAcceptTerms = computed(() => acceptTermsAndConditions.value && acceptFai
             <UiCardTitle class="font-bold text-xl flex justify-center">Sign Up</UiCardTitle>
             <UiCardDescription class="flex justify-center">
               Accept our
-              <UiAlertDialog default-open>
+              <UiAlertDialog>
                 <UiAlertDialogTrigger as-child>
                   <span class="terms-dialog-trigger">_Terms_</span>
                 </UiAlertDialogTrigger>
@@ -170,23 +174,20 @@ const isAcceptTerms = computed(() => acceptTermsAndConditions.value && acceptFai
                       </ul>
 
                       <div class="flex gap-2 items-center">
-                        <UiCheckbox id="terms-and-conditions" v-model="acceptTermsAndConditions"></UiCheckbox>
+                        <UiCheckbox id="terms-and-conditions" v-model:checked="acceptTermsAndConditions"></UiCheckbox>
                         <label for="terms-and-conditions" class="text-sm">
                           I accept <NuxtLink href="#" class="terms-dialog-trigger">Terms & Conditions</NuxtLink>
                         </label>
                       </div>
                       <div class="flex gap-2 items-center">
-                        <UiCheckbox id="fair-use" v-model="acceptFairUse"></UiCheckbox>
+                        <UiCheckbox id="fair-use" v-model:checked="acceptFairUse"></UiCheckbox>
                         <label for="fair-use" class="text-sm">
                           I accept <NuxtLink href="#" class="terms-dialog-trigger">Fair Use</NuxtLink>
                         </label>
                       </div>
 
-                      {{ isAcceptTerms }}
-                      {{ acceptFairUse }}
-                      {{ acceptTermsAndConditions }}
-
-                      <UiAlertDialogAction :disabled="!isAcceptTerms">Take my data! (Agreed)</UiAlertDialogAction>
+                      <UiAlertDialogAction :disabled="!isAcceptTerms" @click.prevent="">Take my data! (Agreed)
+                      </UiAlertDialogAction>
                       <UiAlertDialogCancel>Nope, I am leaving. (Disagree)</UiAlertDialogCancel>
 
                       <div class="flex justify-end">
@@ -217,19 +218,6 @@ const isAcceptTerms = computed(() => acceptTermsAndConditions.value && acceptFai
         </UiTabsContent>
 
         <UiCardFooter class="container">
-          <!-- <div class="grid grid-cols-3 gap-2"> -->
-          <!-- <div class="w-full flex justify-center"> -->
-          <!-- <TabsTrigger> -->
-          <!--   <UiButton variant="link" :loading="isLockButtos" @click.prevent="signUpHandler">Sign In</UiButton> -->
-          <!-- </TabsTrigger> -->
-          <!-- <TabsTrigger> -->
-          <!--   <UiButton variant="link" :loading="isLockButtos" @click.prevent="recoveryHandler">Recovery</UiButton> -->
-          <!-- </TabsTrigger> -->
-          <!-- <TabsTrigger> -->
-          <!--   <UiButton variant="link" :loading="isLockButtos" @click.prevent="signUpHandler">Sign Up</UiButton> -->
-          <!-- </TabsTrigger> -->
-          <!-- </div> -->
-
           <UiTabsList class="container">
             <div class="grid grid-cols-3 gap-2 w-full">
               <UiTabsTrigger value="sign-in"> Sing In </UiTabsTrigger>
@@ -237,7 +225,6 @@ const isAcceptTerms = computed(() => acceptTermsAndConditions.value && acceptFai
               <UiTabsTrigger value="sign-up"> Sign Up </UiTabsTrigger>
             </div>
           </UiTabsList>
-
         </UiCardFooter>
 
       </UiTabs>
