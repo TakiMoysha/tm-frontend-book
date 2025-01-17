@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import usePageState from "~/composables/usePageState";
 import useAppWrite from "~/composables/useAppWrite";
-import { TabsTrigger, TabsList, TabsRoot, TabsContent } from 'radix-vue';
 
 useHead({
   title: "Authentication | Order Book",
@@ -13,7 +12,7 @@ definePageMeta({
 const query = useRoute().query;
 const { isLoading, isLocking } = usePageState();
 const { actions } = await useAppWrite();
-const isLockButtos = computed(() => isLoading || isLocking);
+const isLockButtons = computed(() => isLoading || isLocking);
 
 const signInHandler = async () => {
   actions
@@ -47,17 +46,18 @@ const emailInput = shallowRef("");
 const passwordInput = shallowRef("");
 const controlPasswordInput = shallowRef("");
 
-const acceptTerms = shallowRef(false);
-const acceptPrivacy = shallowRef(false);
+const acceptTermsAndConditions = shallowRef(false);
+const acceptFairUse = shallowRef(false);
+const isAcceptTerms = computed(() => acceptTermsAndConditions.value && acceptFairUse.value);
 </script>
 
 <template>
   <main class="flex justify-center items-center min-h-screen w-full">
     <UiCard class="rounded h-1/2 md:min-w-[400px]">
-      <TabsRoot default-value="sign-in">
+      <UiTabs default-value="sign-up">
 
         <!-- <AuthFormEmailSignIn></AuthFormEmailSignIn> -->
-        <TabsContent value="sign-in">
+        <UiTabsContent value="sign-in">
           <!-- Card Header -->
           <UiCardHeader class="space-y-2">
             <UiCardTitle class="font-bold text-xl flex justify-center">Sign In</UiCardTitle>
@@ -72,7 +72,7 @@ const acceptPrivacy = shallowRef(false);
               <UiTooltipProvider>
                 <UiTooltip>
                   <UiTooltipTrigger as-child>
-                    <UiButton disabled variant="default" :loading="isLockButtos" @click.prevent="signInHandler">
+                    <UiButton disabled variant="secondary" :loading="isLockButtons" @click.prevent="signInHandler">
                       <Icon name="mdi:google" /> Google
                     </UiButton>
                   </UiTooltipTrigger>
@@ -81,7 +81,7 @@ const acceptPrivacy = shallowRef(false);
 
                 <UiTooltip>
                   <UiTooltipTrigger as-child>
-                    <UiButton disabled variant="default" :loading="isLockButtos" @click.prevent="signInHandler">
+                    <UiButton disabled variant="secondary" :loading="isLockButtons" @click.prevent="signInHandler">
                       <Icon name="mdi:github" /> Github
                     </UiButton>
                   </UiTooltipTrigger>
@@ -107,7 +107,7 @@ const acceptPrivacy = shallowRef(false);
                 <UiInput placeholder="Password" type="password" v-model="passwordInput"></UiInput>
               </div>
               <div class="grid gap-2">
-                <UiButton type="button" :loading="isLockButtos" @click.prevent="signInHandler">
+                <UiButton type="button" :loading="isLockButtons" @click.prevent="signInHandler">
                   Sign In
                 </UiButton>
               </div>
@@ -115,9 +115,9 @@ const acceptPrivacy = shallowRef(false);
 
           </UiCardContent>
 
-        </TabsContent>
+        </UiTabsContent>
         <!-- <AuthFormRecovery></AuthFormRecovery> -->
-        <TabsContent value="recovery">
+        <UiTabsContent value="recovery">
           <UiCardHeader class="space-y-2">
             <UiCardTitle class="font-bold text-xl flex justify-center">Recovery</UiCardTitle>
             <UiCardDescription class="flex justify-center">For recovery account enter your email:</UiCardDescription>
@@ -128,19 +128,75 @@ const acceptPrivacy = shallowRef(false);
                 <UiInput placeholder="Email" type="email" v-model="emailInput"></UiInput>
               </div>
               <div class="grid gap-2">
-                <UiButton type="button" :loading="isLockButtos" @click.prevent="recoveryHandler">
+                <UiButton type="button" :loading="isLockButtons" @click.prevent="recoveryHandler">
                   Recovery
                 </UiButton>
               </div>
             </form>
           </UiCardContent>
-        </TabsContent>
+        </UiTabsContent>
 
         <!-- <AuthFormEmailSignUp></AuthFormEmailSignUp> -->
-        <TabsContent value="sign-up">
+        <UiTabsContent value="sign-up">
           <UiCardHeader class="space-y-2">
             <UiCardTitle class="font-bold text-xl flex justify-center">Sign Up</UiCardTitle>
-            <UiCardDescription class="flex justify-center">We need some information about you:</UiCardDescription>
+            <UiCardDescription class="flex justify-center">
+              Accept our
+              <UiAlertDialog default-open>
+                <UiAlertDialogTrigger as-child>
+                  <span class="terms-dialog-trigger">_Terms_</span>
+                </UiAlertDialogTrigger>
+                <UiAlertDialogContent>
+                  <UiAlertDialogHeader>
+                    <UiAlertDialogTitle class="flex justify-center">Briefly about terms of use</UiAlertDialogTitle>
+                  </UiAlertDialogHeader>
+                  <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                      <span class="w-full border-t"></span>
+                    </div>
+                  </div>
+
+                  <UiAlertDialogDescription class="flex">
+                    <div class="grid gap-4">
+
+                      <ul class="list-disc gap-2">
+                        <li>We primarily focus on GDPR;</li>
+                        <li>You are over 13 years old;</li>
+                        <li>Our service provided "as-is";</li>
+                        <li>You agree to receive mail from Us;</li>
+                        <li>We reserve the right to delete or block your account;</li>
+                        <li>We may interact, as part of the services provided, on your behalf, using the data you
+                          provide, with third-party services (such as Github);</li>
+                      </ul>
+
+                      <div class="flex gap-2 items-center">
+                        <UiCheckbox id="terms-and-conditions" v-model="acceptTermsAndConditions"></UiCheckbox>
+                        <label for="terms-and-conditions" class="text-sm">
+                          I accept <NuxtLink href="#" class="terms-dialog-trigger">Terms & Conditions</NuxtLink>
+                        </label>
+                      </div>
+                      <div class="flex gap-2 items-center">
+                        <UiCheckbox id="fair-use" v-model="acceptFairUse"></UiCheckbox>
+                        <label for="fair-use" class="text-sm">
+                          I accept <NuxtLink href="#" class="terms-dialog-trigger">Fair Use</NuxtLink>
+                        </label>
+                      </div>
+
+                      {{ isAcceptTerms }}
+                      {{ acceptFairUse }}
+                      {{ acceptTermsAndConditions }}
+
+                      <UiAlertDialogAction :disabled="!isAcceptTerms">Take my data! (Agreed)</UiAlertDialogAction>
+                      <UiAlertDialogCancel>Nope, I am leaving. (Disagree)</UiAlertDialogCancel>
+
+                      <div class="flex justify-end">
+                      </div>
+                    </div>
+                  </UiAlertDialogDescription>
+                </UiAlertDialogContent>
+              </UiAlertDialog>
+              and enter your credentials:
+            </UiCardDescription>
           </UiCardHeader>
 
           <UiCardContent>
@@ -152,13 +208,13 @@ const acceptPrivacy = shallowRef(false);
                 <UiInput placeholder="Confirm Password" type="password" v-model="controlPasswordInput"></UiInput>
               </div>
               <div class="grid gap-2">
-                <UiButton type="button" :loading="isLockButtos" @click.prevent="signUpHandler">
+                <UiButton type="button" :loading="isLockButtons" @click.prevent="signUpHandler">
                   Sign Up
                 </UiButton>
               </div>
             </form>
           </UiCardContent>
-        </TabsContent>
+        </UiTabsContent>
 
         <UiCardFooter class="container">
           <!-- <div class="grid grid-cols-3 gap-2"> -->
@@ -184,10 +240,19 @@ const acceptPrivacy = shallowRef(false);
 
         </UiCardFooter>
 
-
-      </TabsRoot>
+      </UiTabs>
     </UiCard>
   </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+.terms-dialog-trigger {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #3b82f6;
+}
+
+.terms-dialog-trigger::after {
+  content: "";
+}
+</style>
