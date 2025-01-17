@@ -31,7 +31,8 @@ const signUpHandler = async () => {
     <UiCardTitle class="font-bold text-xl flex justify-center">Sign Up</UiCardTitle>
     <UiCardDescription class="flex justify-center">
       Accept our
-      <AuthDialogTermsConfirmation v-model:acceptTerms="isTermsDialogOpen"
+      <AuthDialogTermsConfirmation
+        v-model:acceptTerms="isTermsDialogOpen"
         @accept-terms="() => console.log('accept-terms')"
         @dismiss-terms="() => console.log('dismiss-terms')"
       >
