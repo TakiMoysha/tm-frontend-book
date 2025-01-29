@@ -31,11 +31,8 @@ const signUpHandler = async () => {
     <UiCardTitle class="font-bold text-xl flex justify-center">Sign Up</UiCardTitle>
     <UiCardDescription class="flex justify-center">
       Accept our
-      <AuthDialogTermsConfirmation
-        v-model:acceptTerms="isTermsDialogOpen"
-        @accept-terms="() => console.log('accept-terms')"
-        @dismiss-terms="() => console.log('dismiss-terms')"
-      >
+      <AuthDialogTermsConfirmation v-model:acceptTerms="isTermsDialogOpen"
+        @accept-terms="() => console.log('accept-terms')" @dismiss-terms="() => console.log('dismiss-terms')">
         <template #trigger-text><span class="terms-dialog-trigger">_Terms_</span></template>
       </AuthDialogTermsConfirmation>
       and enter your credentials:
