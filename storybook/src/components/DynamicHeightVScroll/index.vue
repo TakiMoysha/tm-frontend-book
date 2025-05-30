@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { state } from "@/composables/useVScroll";
-import { loadData } from "@/composables/useLogData";
+import { generateData } from "@/utils/DataGenerator";
 
 import { onMounted, ref, computed, watch, reactive, nextTick } from "vue";
 
@@ -62,7 +62,7 @@ const scrollingDelay = 100;
 const estimateEntryHeight = 40;
 
 // data
-const data = loadData({ count: 1_000, type: "simple" });
+const data = generateData({ count: 1_000, type: "simple" });
 // virtual scrolling (input params)
 const listHeight = ref(0);
 const scrollTop = ref(0);

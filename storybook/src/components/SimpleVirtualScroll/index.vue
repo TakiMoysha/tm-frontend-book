@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import { state } from "@/composables/useVScroll";
-import { loadData } from "@/composables/useLogData";
-
 import { onMounted, ref, computed, watch, reactive } from "vue";
-const props = defineProps(["title", "reverse"]);
 
+const props = defineProps(["loading", "fields", "items", "reverse"]);
+
+onMounted(() => {
+  console.log("SimpleVirtualScroll mounted: ", props);
+})
+// #################################################################################
 // reverse // todo: wip
 watch(
   () => props.reverse,
   () => {
     console.log("REVERSE");
-    data.reverse();
+    props.items.reverse();
   },
 );
 
@@ -20,13 +23,11 @@ const containerHeight = 1200; // computed from viewport
 const overscan = 5;
 const scrollingDelay = 100;
 
-// data
-const data = loadData();
 // virtual scrolling
 const scrollTop = ref(0);
 const scrollElementRef = ref<HTMLDivElement>();
 const isScrolling = ref(false);
-const totalListHeight = computed(() => itemHeight * data.length);
+const totalListHeight = computed(() => itemHeight * props.items.length);
 
 let scrollingTimeoutId: number | null = null;
 
@@ -37,7 +38,8 @@ const proxyEntriesToRender = computed(() => {
   const _endIndex = Math.ceil(rangeEnd / itemHeight);
   let startIndex = _startIndex < 0 ? 0 : _startIndex;
   // let startIndex = Math.max(_startIndex, 0);
-  let endIndex = _endIndex > data.length - 1 ? data.length - 1 : _endIndex;
+  let endIndex =
+    _endIndex > props.items.length - 1 ? props.items.length - 1 : _endIndex;
   // let endIndex = Math.min(endIndex, data.length - 1);
   const virtualEntries = [];
   for (let index = startIndex; index <= endIndex; index++) {
@@ -70,23 +72,19 @@ const handleScroll = () => {
 
 <template>
   <div>
-    <h2>{{ props.title }}</h2>
-    <span>{{ totalListHeight }}</span>
-    <div
-      class="table-responsive-lg"
-      ref="scrollElementRef"
-      @scroll="handleScroll"
-      :style="{
-        height: '73vh',
-        overflow: 'auto',
-        border: '1px inset black',
-      }"
-    >
+
+    <div id="debug-info">
+      <span>{{ props.reverse }}</span>
+      <span>{{ totalListHeight }}</span>
+    </div>
+
+    <div class="table-responsive-lg" ref="scrollElementRef" @scroll="handleScroll" :style="{
+      height: '73vh',
+      overflow: 'auto',
+      border: '1px inset black',
+    }">
       <div :style="{ height: totalListHeight + 'px' }">
-        <table
-          class="table table-striped table-sm"
-          style="position: sticky; top: 0px"
-        >
+        <table class="table table-striped table-sm" style="position: sticky; top: 0px">
           <thead>
             <tr>
               <th scope="col">Id</th>
@@ -96,11 +94,7 @@ const handleScroll = () => {
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="prx of proxyEntriesToRender"
-              :key="prx.index"
-              :style="{ height: itemHeight + 'px' }"
-            >
+            <tr v-for="prx of proxyEntriesToRender" :key="prx.index" :style="{ height: itemHeight + 'px' }">
               <template v-if="isScrolling">
                 <td v-if="isScrolling">Scrolling...</td>
                 <td v-if="isScrolling"></td>
@@ -108,10 +102,10 @@ const handleScroll = () => {
                 <td v-if="isScrolling"></td>
               </template>
               <template v-else>
-                <td>{{ data[prx.index].id }}</td>
-                <td>{{ data[prx.index].text }}</td>
+                <td>{{ items[prx.index].id }}</td>
+                <td>{{ items[prx.index].text }}</td>
                 <td>{{ prx }}</td>
-                <td>{{ data[prx.index] }}</td>
+                <td>{{ items[prx.index] }}</td>
               </template>
             </tr>
           </tbody>
