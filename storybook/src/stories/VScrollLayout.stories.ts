@@ -1,22 +1,22 @@
 import type { Meta, StoryObj } from "@storybook/vue3";
 
-import VScroll from "./VScroll.vue";
+import VScrollLayout from "./VScrollLayout.vue";
 
 const meta = {
-  title: "Example/VirtualScroll",
-  component: VScroll,
+  title: "Example/VirtualScrollLayout",
+  component: VScrollLayout,
   render: (args: any) => ({
-    components: { VScroll },
+    components: { VScrollLayout },
     setup() {
       return { args };
     },
-    // template: '<v-scroll :user="args.user" />',
+    template: '<v-scroll-layout />',
   }),
   parameters: {
     layout: "fullscreen",
   },
   tags: ["autodocs"],
-} satisfies Meta<typeof VScroll>;
+} satisfies Meta<typeof VScrollLayout>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

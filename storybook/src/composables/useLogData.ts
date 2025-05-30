@@ -2,6 +2,7 @@ interface ILoadDataOpts {
   count: number;
   type?: "simple";
 }
+
 export const loadData = (opts?: ILoadDataOpts) => {
   const generators = {
     simple: Array.from({ length: opts?.count || 10_000 }, (_, index) => ({

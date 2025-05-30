@@ -24,7 +24,7 @@ const scrollingDelay = 100;
 const data = loadData();
 // virtual scrolling
 const scrollTop = ref(0);
-const scrollElementRef = ref<HTMLDivElement>(null);
+const scrollElementRef = ref<HTMLDivElement>();
 const isScrolling = ref(false);
 const totalListHeight = computed(() => itemHeight * data.length);
 
@@ -49,7 +49,9 @@ const proxyEntriesToRender = computed(() => {
   return virtualEntries;
 });
 const handleScroll = () => {
-  scrollTop.value = scrollElementRef.value?.scrollTop;
+  if (!scrollElementRef.value) return;
+
+  scrollTop.value = scrollElementRef.value.scrollTop;
   state.setScrollTop(scrollTop.value);
 
   isScrolling.value = true;
@@ -70,13 +72,21 @@ const handleScroll = () => {
   <div>
     <h2>{{ props.title }}</h2>
     <span>{{ totalListHeight }}</span>
-    <div class="table-responsive-lg" ref="scrollElementRef" @scroll="handleScroll" :style="{
-      height: '73vh',
-      overflow: 'auto',
-      border: '1px inset black',
-    }">
+    <div
+      class="table-responsive-lg"
+      ref="scrollElementRef"
+      @scroll="handleScroll"
+      :style="{
+        height: '73vh',
+        overflow: 'auto',
+        border: '1px inset black',
+      }"
+    >
       <div :style="{ height: totalListHeight + 'px' }">
-        <table class="table table-striped table-sm" style="position: sticky; top: 0px">
+        <table
+          class="table table-striped table-sm"
+          style="position: sticky; top: 0px"
+        >
           <thead>
             <tr>
               <th scope="col">Id</th>
@@ -86,7 +96,11 @@ const handleScroll = () => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="prx of proxyEntriesToRender" :key="prx.index" style="{ height: itemHeight + 'px'}">
+            <tr
+              v-for="prx of proxyEntriesToRender"
+              :key="prx.index"
+              :style="{ height: itemHeight + 'px' }"
+            >
               <template v-if="isScrolling">
                 <td v-if="isScrolling">Scrolling...</td>
                 <td v-if="isScrolling"></td>

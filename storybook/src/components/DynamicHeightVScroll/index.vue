@@ -7,12 +7,15 @@ import { onMounted, ref, computed, watch, reactive, nextTick } from "vue";
 // debug
 const isDebug = ref(true);
 
-function copyEventTargetText(e: Event) {
-  const code = e.target.previousElementSibling;
-  if (!code) return;
+function copyEventTargetText(event: KeyboardEvent) {
+  if (!event.target) return;
+
+  const codeElement = (event.target as HTMLElement)?.previousElementSibling;
+  if (!codeElement) return;
+
   if (navigator && navigator.clipboard) {
     // need to check because it's only available on https and localohost
-    navigator.clipboard.writeText(code.innerText);
+    navigator.clipboard.writeText((codeElement as HTMLElement).innerText);
   }
 }
 // select only content in container

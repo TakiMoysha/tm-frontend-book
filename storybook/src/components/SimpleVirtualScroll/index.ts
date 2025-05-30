@@ -1,1 +1,1 @@
-import { default as SimpleVirtualScroll } from "./index.vue";
+export { default as SimpleVirtualScroll } from "./index.vue";

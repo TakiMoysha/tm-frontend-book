@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [vue(), Components({ resolvers: [BootstrapVueNextResolver()] })],
   resolve: {
     alias: {
-      // "@": Bun.fileURLToPath(new URL("./src", import.meta.url)),
+      "@": "/src",
     },
   },
 });

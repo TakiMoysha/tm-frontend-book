@@ -1,10 +1,18 @@
 <script setup lang="ts">
 // import VScroll from "@/components/VirtualScroll.vue";
-import DynamicHeightVScroll from "@/components/DynamicHeightVScroll";
+import { DynamicHeightVScroll } from "@/components/DynamicHeightVScroll";
 import { state } from "@/composables/useVScroll";
 import { ref } from "vue";
+type LayoutProps = {
+  data?: string[];
+  reverse?: boolean;
+};
+const props = withDefaults(defineProps<LayoutProps>(), {
+  data: () => [],
+  reverse: false,
+});
 
-const reverse = ref(false);
+const reverse = ref(props.reverse); // local reverse
 </script>
 
 <template>
@@ -51,7 +59,7 @@ const reverse = ref(false);
               </li>
             </ul>
             <ul>
-              <span>Reverse: {{ reverse }}</span>
+              <span>Reverse: {{ props.reverse }}:{{ reverse }}</span>
             </ul>
             <ul>
               <span>State: {{ state.debugValue }}</span>
@@ -75,7 +83,7 @@ const reverse = ref(false);
             </div>
           </div>
 
-          <DynamicHeightVScroll title="Base VirtualScroll" :reverse="reverse" />
+          <slot></slot>
         </main>
       </div>
     </div>
