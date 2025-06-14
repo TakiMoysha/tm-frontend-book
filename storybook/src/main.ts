@@ -1,13 +1,18 @@
 import { createApp } from "vue";
-import { createBootstrap } from "bootstrap-vue-next";
 
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-vue-next/dist/bootstrap-vue-next.css";
+import PrimeVue from "primevue/config";
 
 import "./style.css";
 
 import App from "./App.vue";
+import { definePreset } from "@primeuix/themes";
+import Nora from "@primeuix/themes/nora";
+
+const PrimeNoraPreset = definePreset(Nora, {});
 
 createApp(App)
-  .use(createBootstrap())
+  .use(PrimeVue, {
+    theme: { preset: PrimeNoraPreset },
+    ripple: true,
+  })
   .mount("#app");

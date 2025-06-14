@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { state } from "@/composables/useVScroll";
-import { generateData } from "@/utils/DataGenerator";
+import { generateData } from "@/lib/DataGenerator";
 
 import { onMounted, ref, computed, watch, reactive, nextTick } from "vue";
 

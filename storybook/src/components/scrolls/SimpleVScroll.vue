@@ -6,7 +6,7 @@ const props = defineProps(["loading", "fields", "items", "reverse"]);
 
 onMounted(() => {
   console.log("SimpleVirtualScroll mounted: ", props);
-})
+});
 // #################################################################################
 // reverse // todo: wip
 watch(
@@ -71,46 +71,55 @@ const handleScroll = () => {
 </script>
 
 <template>
-  <div>
-
-    <div id="debug-info">
-      <span>{{ props.reverse }}</span>
-      <span>{{ totalListHeight }}</span>
-    </div>
-
-    <div class="table-responsive-lg" ref="scrollElementRef" @scroll="handleScroll" :style="{
-      height: '73vh',
-      overflow: 'auto',
-      border: '1px inset black',
-    }">
-      <div :style="{ height: totalListHeight + 'px' }">
-        <table class="table table-striped table-sm" style="position: sticky; top: 0px">
-          <thead>
-            <tr>
-              <th scope="col">Id</th>
-              <th scope="col">Num</th>
-              <th scope="col">Proxy</th>
-              <th scope="col">Object</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="prx of proxyEntriesToRender" :key="prx.index" :style="{ height: itemHeight + 'px' }">
-              <template v-if="isScrolling">
-                <td v-if="isScrolling">Scrolling...</td>
-                <td v-if="isScrolling"></td>
-                <td v-if="isScrolling"></td>
-                <td v-if="isScrolling"></td>
-              </template>
-              <template v-else>
-                <td>{{ items[prx.index].id }}</td>
-                <td>{{ items[prx.index].text }}</td>
-                <td>{{ prx }}</td>
-                <td>{{ items[prx.index] }}</td>
-              </template>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  <div class="table-responsive-lg" ref="scrollElementRef" @scroll="handleScroll">
+    <div :style="{ height: totalListHeight + 'px' }">
+      <table class="table table-striped table-sm" style="position: sticky; top: 0px">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Num</th>
+            <th scope="col">Proxy</th>
+            <th scope="col">Object</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="prx of proxyEntriesToRender" :key="prx.index" :style="{ height: itemHeight + 'px' }">
+            <template v-if="isScrolling">
+              <td v-if="isScrolling">Scrolling...</td>
+              <td v-if="isScrolling"></td>
+              <td v-if="isScrolling"></td>
+              <td v-if="isScrolling"></td>
+            </template>
+            <template v-else>
+              <td>{{ items[prx.index].id }}</td>
+              <td>{{ items[prx.index].text }}</td>
+              <td>{{ prx }}</td>
+              <td>{{ items[prx.index] }}</td>
+            </template>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
+
+<style module lang="css">
+.table-responsive-lg {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive-lg table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+}
+
+.table-responsive-lg th,
+td {
+  border: 1px solid #000;
+  padding: 8px;
+  text-align: left;
+}
+</style>
