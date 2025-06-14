@@ -9,6 +9,5 @@ export default defineConfig({
     alias: {
       "@": "/src",
     },
-    extensions: [".vue", ".js", ".ts", ".jsx", ".tsx", ".json"],
   },
 });

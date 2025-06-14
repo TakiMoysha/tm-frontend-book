@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/vue3";
 import { action } from "storybook/actions";
-import { fn } from "storybook/test";
 
 import { generateData } from "@/lib/DataGenerator";
 
@@ -12,22 +11,33 @@ const actions = {
 };
 
 const defaultArgs = {
-  items: [{ id: 1 }, { id: 2 }],
+  items: [
+    { id: "711e755f-cf2f-4720-9858-22bc3906af24", text: "Item 1" },
+    { id: "57f988ed-936b-4ca3-a2e1-8a4f2954d29c", text: "Item 2" },
+  ],
   fields: ["id", "name"],
   loading: false,
   reverse: false,
 };
 
-const URL = "https://jsonplaceholder.typicode.com/todos/";
+const getItems = async () => {
+  // return fetch("https://jsonplaceholder.typicode.com/todos/").then((res) => res.json());
+  return generateData("simple", { count: 1_000 });
+};
+
 const meta = {
   args: defaultArgs,
   // parameters: {
   //   layout: "fullscreen",
   // },
+  decorators: [
+    () => ({
+      template: '<div class="container" style="height: 70vh"><story/></div>',
+    }),
+  ],
   loaders: [
     async () => ({
-      mockItems: await (await fetch(URL)).json(),
-      generatedItems: await generateData("simple", { count: 1_000 }),
+      mockItems: await getItems(),
     }),
   ],
 } satisfies Meta;
@@ -37,21 +47,21 @@ type Story = StoryObj<typeof meta>;
 
 // ========================================================
 export const SimpleVirtualScroll: Story = {
-  render: (args, { loaded: { mockItems, generatedItems } }) => ({
+  render: (args, { loaded: { mockItems } }) => ({
     components: { SimpleVScroll },
     setup() {
-      return { ...args, mocked: mockItems, generated: generatedItems };
+      return { ...args, mockItems: mockItems };
     },
-    template: `<SimpleVScroll :fields="fields" :items="generated" :reverse="reverse" :loading="loading" />`,
+    template: `<SimpleVScroll :fields="fields" :items="mockItems" :reverse="reverse" :loading="loading" />`,
   }),
 };
 
 export const DynamicRowHeightVirtualScroll: Story = {
-  render: (args, { loaded: { mockItems, generatedItems } }) => ({
+  render: (args, { loaded: { mockItems } }) => ({
     components: { DynamicRowHeightVScroll },
     setup() {
-      return { ...args, mocked: mockItems, generated: generatedItems };
+      return { ...args, mocked: mockItems };
     },
-    template: `<DynamicRowHeightVScroll :fields="fields" :items="generated" :reverse="reverse" :loading="loading" />`,
+    template: `<DynamicRowHeightVScroll :fields="fields" :items="mockItems" :reverse="reverse" :loading="loading" />`,
   }),
 };

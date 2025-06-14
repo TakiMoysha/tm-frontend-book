@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { state } from "@/composables/useVScroll";
+import type { IVScrollProps } from "./type";
 import { generateData } from "@/lib/DataGenerator";
 
 import { onMounted, ref, computed, watch, reactive, nextTick } from "vue";
@@ -44,12 +45,14 @@ const addListeners = () => {
   // };
 };
 // props
-const props = defineProps(["title", "reverse"]);
+const props = defineProps(["loading", "fields", "items", "reverse"]);
+
 watch(
   () => props.reverse,
   () => {
     console.log("REVERSE");
-    data.reverse();
+    // data.reverse();
+    props.items.reverse();
   },
 );
 
@@ -62,7 +65,7 @@ const scrollingDelay = 100;
 const estimateEntryHeight = 40;
 
 // data
-const data = generateData({ count: 1_000, type: "simple" });
+const data = ref(props.items);
 // virtual scrolling (input params)
 const listHeight = ref(0);
 const scrollTop = ref(0);
@@ -153,39 +156,53 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <h2>{{ props.title }}</h2>
-    <div class="table-responsive-lg" ref="scrollElementRef" @scroll="handleScroll" :style="{
-      height: '60vh',
-      overflow: 'auto',
-      border: '1px inset black',
-    }">
-      <div :style="{ height: useDynHeight.totalHeight + 'px' }">
-        <table class="table table-striped table-sm" style="position: sticky; top: 0px">
-          <thead>
-            <tr>
-              <th scope="col">Id</th>
-              <th scope="col">Num</th>
-              <th scope="col">Proxy</th>
-              <th scope="col">Object</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="ventry of useDynHeight.virtualEntries" :key="ventry.index">
-              <td>{{ data[ventry.index].id }}</td>
-              <td>{{ data[ventry.index].text }}</td>
-              <td>{{ ventry }}</td>
-              <td>{{ data[ventry.index] }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div v-show="isDebug" ref="selectable-content" id="selectable-content">
-      <p>{{ useDynHeight.totalHeight }}</p>
-      <p>{{ useDynHeight.virtualEntries }}</p>
-      <p>{{ listHeight }}</p>
-      <p>{{ listHeightHook }}</p>
+  <div class="table-responsive-lg" ref="scrollElementRef" @scroll="handleScroll">
+    <div :style="{ height: useDynHeight.totalHeight + 'px' }">
+      <table class="table table-striped table-sm" style="position: sticky; top: 0px">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Num</th>
+            <th scope="col">Proxy</th>
+            <th scope="col">Object</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="ventry of useDynHeight.virtualEntries" :key="ventry.index">
+            <td>{{ data[ventry.index].id }}</td>
+            <td>{{ data[ventry.index].text }}</td>
+            <td>{{ ventry }}</td>
+            <td>{{ data[ventry.index] }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
+  <div v-show="isDebug" ref="selectable-content" id="selectable-content">
+    <p>{{ useDynHeight.totalHeight }}</p>
+    <p>{{ useDynHeight.virtualEntries }}</p>
+    <p>{{ listHeight }}</p>
+    <p>{{ listHeightHook }}</p>
+  </div>
 </template>
+
+<style module lang="css">
+.table-responsive-lg {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive-lg table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+}
+
+.table-responsive-lg th,
+td {
+  border: 1px solid #000;
+  padding: 8px;
+  text-align: left;
+}
+</style>

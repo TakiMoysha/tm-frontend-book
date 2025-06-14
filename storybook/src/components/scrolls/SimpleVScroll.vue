@@ -103,23 +103,20 @@ const handleScroll = () => {
   </div>
 </template>
 
-<style module lang="css">
+<style module>
 .table-responsive-lg {
   display: block;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
-
 .table-responsive-lg table {
   width: 100%;
   max-width: 100%;
   border-collapse: collapse;
 }
-
-.table-responsive-lg th,
-td {
-  border: 1px solid #000;
-  padding: 8px;
-  text-align: left;
-}
+/* .table-responsive-lg th,td { */
+/*   border: 1px solid #000; */
+/*   padding: 8px; */
+/*   text-align: left; */
+/* } */
 </style>
