@@ -1,51 +1,38 @@
-import { Application } from "@webviewjs/webview";
+var webview = require("@suchipi/webview");
 
-const width = 800;
-const height = 600;
+// webview is an object with this shape:
+// {
+//   binaryPath: string, // The absolute path to the binary for your platform
+//   optionsToArgv: Function, // Convert an options object to the appropriate argv to pass to the binary
+//   spawn: Function, // use child_process.spawn to run the binary
+//   spawnSync: Function, // use child_process.spawnSync to run the binary
+//   exec: Function, // use child_process.execFile to run the binary
+//   execSync: Function, // use child_process.execFileSync to run the binary
+// }
 
-const app = new Application();
+// You can either use webview.binaryPath and webview.optionsToArgv to spawn it yourself:
+var child = require("child_process").spawn(
+  webview.binaryPath,
+  optionsToArgv({
+    title: "My App",
+    width: 1024,
+    height: 768,
+    dir: "./public",
+  }),
+  {
+    cwd: process.cwd(),
+  },
+);
 
-app.onEvent(console.log);
+// or you can use the provided helper functions to spawn it using child_process.
+// Note that the helper function accepts webview options and spawn options in the same object.
+var child = webview.spawn({
+  // options for webview
+  title: "My App",
+  width: 1024,
+  height: 768,
+  dir: "./public",
 
-const window = app.createBrowserWindow({
-  width,
-  height,
-  title: "Multiple Webviews",
+  // options for child_process.spawn
+  cwd: process.cwd(),
 });
-
-const webview1 = window.createWebview({
-  url: "https://nodejs.org",
-  child: true,
-  width: width / 2,
-  height,
-});
-
-const webview2 = window.createWebview({
-  url: "https://deno.land",
-  child: true,
-  width: width / 2,
-  x: width / 2,
-  height,
-});
-
-webview1.onIpcMessage((message) => {
-  const str = message.body.toString("utf8");
-
-  console.log("Received message from webview 1:", str);
-});
-
-webview1.evaluateScript(`setTimeout(() => {
-    window.ipc.postMessage('Hello from webview1')
-}, 1000)`);
-
-webview2.onIpcMessage((message) => {
-  const str = message.body.toString("utf8");
-
-  console.log("Received message from webview 2:", str);
-});
-
-webview2.evaluateScript(`setTimeout(() => {
-    window.ipc.postMessage('Hello from webview2')
-}, 1000)`);
-
-app.run();
