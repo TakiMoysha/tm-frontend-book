@@ -11,10 +11,7 @@ const actions = {
 };
 
 const defaultArgs = {
-  items: [
-    { id: "711e755f-cf2f-4720-9858-22bc3906af24", text: "Item 1" },
-    { id: "57f988ed-936b-4ca3-a2e1-8a4f2954d29c", text: "Item 2" },
-  ],
+  items: [],
   fields: ["id", "name"],
   loading: false,
   reverse: false,
@@ -22,17 +19,14 @@ const defaultArgs = {
 
 const getItems = async () => {
   // return fetch("https://jsonplaceholder.typicode.com/todos/").then((res) => res.json());
-  return generateData("simple", { count: 1_000 });
+  return await generateData("simple", { count: 10_000 });
 };
 
 const meta = {
   args: defaultArgs,
-  // parameters: {
-  //   layout: "fullscreen",
-  // },
   decorators: [
     () => ({
-      template: '<div class="max-h-30rem h-30rem overflow-auto"><story/></div>',
+      template: '<div class="h-30rem overflow-auto"><story/></div>',
     }),
   ],
   loaders: [
@@ -50,9 +44,9 @@ export const SimpleVirtualScroll: Story = {
   render: (args, { loaded: { mockItems } }) => ({
     components: { SimpleVScroll },
     setup() {
-      return { ...args, mockItems: mockItems };
+      return { ...args, items: mockItems };
     },
-    template: `<SimpleVScroll :fields="fields" :items="mockItems" :reverse="reverse" :loading="loading" />`,
+    template: `<SimpleVScroll v-bind:items="items" />`,
   }),
 };
 
@@ -60,8 +54,8 @@ export const DynamicRowHeightVirtualScroll: Story = {
   render: (args, { loaded: { mockItems } }) => ({
     components: { DynamicRowHeightVScroll },
     setup() {
-      return { ...args, mocked: mockItems };
+      return { ...args, items: mockItems };
     },
-    template: `<DynamicRowHeightVScroll :fields="fields" :items="mockItems" :reverse="reverse" :loading="loading" />`,
+    template: `<DynamicRowHeightVScroll v-bind="args" />`,
   }),
 };

@@ -28,6 +28,7 @@ const scrollTop = ref(0);
 const scrollElementRef = ref<HTMLDivElement>();
 const isScrolling = ref(false);
 const totalListHeight = computed(() => itemHeight * props.items.length);
+const itemsLength = computed(() => props.items?.length || 0);
 
 let scrollingTimeoutId: number | null = null;
 
@@ -39,7 +40,7 @@ const proxyEntriesToRender = computed(() => {
   let startIndex = _startIndex < 0 ? 0 : _startIndex;
   // let startIndex = Math.max(_startIndex, 0);
   let endIndex =
-    _endIndex > props.items.length - 1 ? props.items.length - 1 : _endIndex;
+    _endIndex > itemsLength.value - 1 ? itemsLength.value - 1 : _endIndex;
   // let endIndex = Math.min(endIndex, data.length - 1);
   const virtualEntries = [];
   for (let index = startIndex; index <= endIndex; index++) {
@@ -50,6 +51,7 @@ const proxyEntriesToRender = computed(() => {
   }
   return virtualEntries;
 });
+
 const handleScroll = () => {
   if (!scrollElementRef.value) return;
 
@@ -71,8 +73,9 @@ const handleScroll = () => {
 </script>
 
 <template>
-  <div ref="scrollElementRef" @scroll="handleScroll">
-    <table class="table-container" >
+  <div ref="scrollElementRef">
+  <!-- <div ref="scrollElementRef" @scroll="handleScroll"> -->
+    <table class="table-container">
       <thead>
         <tr>
           <th scope="col">Id</th>
@@ -82,7 +85,7 @@ const handleScroll = () => {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="prx of proxyEntriesToRender" :key="prx.index" :style="{ height: itemHeight + 'px' }">
+        <tr v-for="prx of proxyEntriesToRender" :key="prx.index">
           <td>{{ items[prx.index].id }}</td>
           <td>{{ items[prx.index].text }}</td>
           <td>{{ prx }}</td>
