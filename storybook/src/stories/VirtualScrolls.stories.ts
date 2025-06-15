@@ -36,7 +36,6 @@ type Story = StoryObj<typeof meta>;
 
 // ========================================================
 export const SimpleVirtualScroll: Story = {
-  tags: ["dev"],
   render: (args, { loaded: { mockItems } }) => ({
     components: { SimpleVScroll },
     setup() {
@@ -52,6 +51,6 @@ export const DynamicRowHeightVirtualScroll: Story = {
     setup() {
       return { ...args, items: mockItems };
     },
-    template: `<DynamicRowHeightVScroll v-bind="args" />`,
+    template: `<DynamicRowHeightVScroll v-bind:items="args" />`,
   }),
 };

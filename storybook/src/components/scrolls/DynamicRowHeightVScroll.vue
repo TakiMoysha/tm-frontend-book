@@ -1,62 +1,68 @@
 <script setup lang="ts">
 import { state } from "@/composables/useVScroll";
-import type { IVScrollProps } from "./type";
-import { generateData } from "@/lib/DataGenerator";
 
 import { onMounted, ref, computed, watch, reactive, nextTick } from "vue";
+
+export interface IDynamicRowHeightVScrollProps {
+  items: any[];
+  scrollingDelay?: number;
+
+  reverse?: boolean;
+
+  loading?: boolean;
+}
+
+const props =defineProps<IDynamicRowHeightVScrollProps>();
 
 // debug
 const isDebug = ref(true);
 
-function copyEventTargetText(event: KeyboardEvent) {
-  if (!event.target) return;
-
-  const codeElement = (event.target as HTMLElement)?.previousElementSibling;
-  if (!codeElement) return;
-
-  if (navigator && navigator.clipboard) {
-    // need to check because it's only available on https and localohost
-    navigator.clipboard.writeText((codeElement as HTMLElement).innerText);
-  }
-}
+// function copyEventTargetText(event: KeyboardEvent) {
+//   if (!event.target) return;
+//
+//   const codeElement = (event.target as HTMLElement)?.previousElementSibling;
+//   if (!codeElement) return;
+//
+//   if (navigator && navigator.clipboard) {
+//     // need to check because it's only available on https and localohost
+//     navigator.clipboard.writeText((codeElement as HTMLElement).innerText);
+//   }
+// }
 // select only content in container
 
-const addListeners = () => {
-  // const selectableContent = ref<HTMLDivElement>("selectable-content");
-  const selectableContent = document.getElementById("selectable-content");
-  selectableContent?.addEventListener("keydown", (event) => {
-    if (event.key === "a" && event.ctrlKey) {
-      event.preventDefault();
-      copyEventTargetText(event);
-    }
-  });
+// const addListeners = () => {
+//   // const selectableContent = ref<HTMLDivElement>("selectable-content");
+//   const selectableContent = document.getElementById("selectable-content");
+//   selectableContent?.addEventListener("keydown", (event) => {
+//     if (event.key === "a" && event.ctrlKey) {
+//       event.preventDefault();
+//       copyEventTargetText(event);
+//     }
+//   });
 
-  // selectableContent.onkeydown = (event) => {
-  //   console.warn("select all");
-  //   if (event.key === "a" && event.ctrlKey) {
-  //     event.preventDefault();
-  //     console.warn("select all");
-  //     const range = document.createRange();
-  //     range.selectNodeContents(selectableContent);
-  //     const selection = window.getSelection();
-  //     selection.removeAllRanges();
-  //     selection.addRange(range);
-  //   }
-  // };
-};
-// props
-const props = defineProps(["loading", "fields", "items", "reverse"]);
+// selectableContent.onkeydown = (event) => {
+//   console.warn("select all");
+//   if (event.key === "a" && event.ctrlKey) {
+//     event.preventDefault();
+//     console.warn("select all");
+//     const range = document.createRange();
+//     range.selectNodeContents(selectableContent);
+//     const selection = window.getSelection();
+//     selection.removeAllRanges();
+//     selection.addRange(range);
+//   }
+// };
+// };
 
-watch(
-  () => props.reverse,
-  () => {
-    console.log("REVERSE");
-    // data.reverse();
-    props.items.reverse();
-  },
-);
+// watch(
+//   () => props.reverse,
+//   () => {
+//     console.log("REVERSE");
+//     // data.reverse();
+//     props.items.reverse();
+//   },
+// );
 
-// simple vscroll consts
 const getEntryHeight = (index: number) => {
   return 30 + Math.round(Math.random() * 40);
 };
@@ -96,7 +102,7 @@ const useDynHeight = computed(() => {
   let startIndex = -1;
   let endIndex = -1;
 
-  const entriesCount = data.length;
+  const entriesCount = props.items?.length;
   const allEntries = Array(entriesCount);
   console.log("useDynHeight: ", rangeStart, rangeEnd, entriesCount);
   for (let index = 0; index <= entriesCount; index++) {
@@ -151,11 +157,17 @@ const handleScroll = () => {
 
 onMounted(() => {
   nextTick();
-  addListeners();
+  // addListeners();
 });
 </script>
 
 <template>
+  <div v-show="isDebug" ref="selectable-content" id="selectable-content">
+    <p>{{ props.items?.length || null }}</p>
+    <p>{{ useDynHeight.totalHeight }} {{ useDynHeight.virtualEntries }}</p>
+    <p>{{ listHeight }} {{ listHeightHook }}</p>
+  </div>
+
   <div class="container" ref="scrollElementRef" @scroll="handleScroll">
     <div :style="{ height: useDynHeight.totalHeight + 'px' }">
       <table class="table table-striped table-sm" style="position: sticky; top: 0px">
@@ -177,12 +189,6 @@ onMounted(() => {
         </tbody>
       </table>
     </div>
-  </div>
-  <div v-show="isDebug" ref="selectable-content" id="selectable-content">
-    <p>{{ useDynHeight.totalHeight }}</p>
-    <p>{{ useDynHeight.virtualEntries }}</p>
-    <p>{{ listHeight }}</p>
-    <p>{{ listHeightHook }}</p>
   </div>
 </template>
 

@@ -23,8 +23,6 @@ const scrollingDelay = 100;
 const scrollTopPos = ref(0);
 const scrollElementRef = ref<HTMLDivElement>();
 const isScrolling = ref(false);
-const sumItemsHeight = computed(() => itemHeight * props.items.length);
-const itemsLength = computed(() => props.items?.length || 0);
 
 let scrollingTimeoutId: number | null = null;
 
@@ -36,9 +34,6 @@ const proxyItemsToRender = computed(() => {
   /* calculate start and end index of items to render */
   const fromItemIndex = Math.floor(rangeStart / itemHeight);
   const toItemIndex = Math.ceil(rangeEnd / itemHeight);
-
-  let fromItem = Math.max(fromItemIndex - overscan, 0);
-  let toItem = Math.min(toItemIndex, itemsLength.value - 1);
 
   const virtualEntries = [];
   for (let i = fromItemIndex; i <= toItemIndex; i++) {
