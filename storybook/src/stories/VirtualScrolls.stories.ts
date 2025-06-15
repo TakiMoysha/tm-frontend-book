@@ -32,7 +32,7 @@ const meta = {
   // },
   decorators: [
     () => ({
-      template: '<div class="container" style="height: 70vh"><story/></div>',
+      template: '<div class="max-h-30rem h-30rem overflow-auto"><story/></div>',
     }),
   ],
   loaders: [

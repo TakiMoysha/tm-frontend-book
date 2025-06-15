@@ -1,4 +1,7 @@
-import "@primeuix/themes/nora";
+/*  */
+import "@/styles";
+
+/*  */
 import { themes } from "storybook/internal/theming";
 
 // export const parameters = {
@@ -13,19 +16,21 @@ import { themes } from "storybook/internal/theming";
 //   },
 // };
 
+/* Theme Switcher */
 import { withThemeByDataAttribute } from "@storybook/addon-themes";
 
-// export const decorators = [
-//   withThemeByDataAttribute({
-//     themes: {
-//       light: "light",
-//       dark: "dark",
-//     },
-//     defaultTheme: "dark",
-//     attributeName: "data-bs-theme",
-//   }),
-// ];
+export const decorators = [
+  withThemeByDataAttribute({
+    themes: {
+      light: "light",
+      dark: "dark",
+    },
+    defaultTheme: "dark",
+    attributeName: "data-bs-theme",
+  }),
+];
 
+/*  */
 import type { Preview } from "@storybook/vue3-vite";
 
 // import { initialize, mswLoader } from "msw-storybook-addon";
@@ -34,7 +39,7 @@ import type { Preview } from "@storybook/vue3-vite";
 
 const preview: Preview = {
   parameters: {
-    // actions: { argTypesRegex: "^on[A-Z].*" },
+    actions: { argTypesRegex: "^on[A-Z].*" }, // autodiscrover - onUpdate, onToggle, onChangeState
     controls: {
       matchers: {
         color: /(background|color)$/i,

@@ -71,52 +71,56 @@ const handleScroll = () => {
 </script>
 
 <template>
-  <div class="table-responsive-lg" ref="scrollElementRef" @scroll="handleScroll">
-    <div :style="{ height: totalListHeight + 'px' }">
-      <table class="table table-striped table-sm" style="position: sticky; top: 0px">
-        <thead>
-          <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Num</th>
-            <th scope="col">Proxy</th>
-            <th scope="col">Object</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="prx of proxyEntriesToRender" :key="prx.index" :style="{ height: itemHeight + 'px' }">
-            <template v-if="isScrolling">
-              <td v-if="isScrolling">Scrolling...</td>
-              <td v-if="isScrolling"></td>
-              <td v-if="isScrolling"></td>
-              <td v-if="isScrolling"></td>
-            </template>
-            <template v-else>
-              <td>{{ items[prx.index].id }}</td>
-              <td>{{ items[prx.index].text }}</td>
-              <td>{{ prx }}</td>
-              <td>{{ items[prx.index] }}</td>
-            </template>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div ref="scrollElementRef" @scroll="handleScroll">
+    <table class="table-container" >
+      <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Num</th>
+          <th scope="col">Proxy</th>
+          <th scope="col">Object</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="prx of proxyEntriesToRender" :key="prx.index" :style="{ height: itemHeight + 'px' }">
+          <td>{{ items[prx.index].id }}</td>
+          <td>{{ items[prx.index].text }}</td>
+          <td>{{ prx }}</td>
+          <td>{{ items[prx.index] }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
-<style module>
-.table-responsive-lg {
-  display: block;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-.table-responsive-lg table {
+<style scope>
+.table-container {
   width: 100%;
-  max-width: 100%;
+  height: 100%;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  /* ограничения размера, что бы не выступало */
+  overflow-y: auto;
+}
+
+.table-container thead th {
+  position: sticky;
+  top: 0;
+}
+
+table {
+  width: 100%;
   border-collapse: collapse;
 }
-/* .table-responsive-lg th,td { */
-/*   border: 1px solid #000; */
-/*   padding: 8px; */
-/*   text-align: left; */
-/* } */
+
+th {
+  background-color: #f2f2f2;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
 </style>

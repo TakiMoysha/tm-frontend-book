@@ -156,7 +156,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="table-responsive-lg" ref="scrollElementRef" @scroll="handleScroll">
+  <div class="container" ref="scrollElementRef" @scroll="handleScroll">
     <div :style="{ height: useDynHeight.totalHeight + 'px' }">
       <table class="table table-striped table-sm" style="position: sticky; top: 0px">
         <thead>
