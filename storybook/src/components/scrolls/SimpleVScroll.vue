@@ -3,10 +3,6 @@ import { state } from "@/composables/useVScroll";
 import { onMounted, ref, computed, watch, reactive } from "vue";
 
 const props = defineProps(["loading", "fields", "items", "reverse"]);
-
-onMounted(() => {
-  console.log("SimpleVirtualScroll mounted: ", props);
-});
 // #################################################################################
 // reverse // todo: wip
 watch(
@@ -18,47 +14,54 @@ watch(
 );
 
 // simple vscroll consts
-const itemHeight = 40;
-const containerHeight = 1200; // computed from viewport
+const itemHeight = 20;
+const viewContainerHeight = window.innerHeight; // computed from viewport
 const overscan = 5;
 const scrollingDelay = 100;
 
 // virtual scrolling
-const scrollTop = ref(0);
+const scrollTopPos = ref(0);
 const scrollElementRef = ref<HTMLDivElement>();
 const isScrolling = ref(false);
-const totalListHeight = computed(() => itemHeight * props.items.length);
+const sumItemsHeight = computed(() => itemHeight * props.items.length);
 const itemsLength = computed(() => props.items?.length || 0);
 
 let scrollingTimeoutId: number | null = null;
 
-const proxyEntriesToRender = computed(() => {
-  const rangeStart = scrollTop.value;
-  const rangeEnd = rangeStart + containerHeight;
-  const _startIndex = Math.floor(rangeStart / itemHeight);
-  const _endIndex = Math.ceil(rangeEnd / itemHeight);
-  let startIndex = _startIndex < 0 ? 0 : _startIndex;
-  // let startIndex = Math.max(_startIndex, 0);
-  let endIndex =
-    _endIndex > itemsLength.value - 1 ? itemsLength.value - 1 : _endIndex;
-  // let endIndex = Math.min(endIndex, data.length - 1);
+const proxyItemsToRender = computed(() => {
+  /* take position of first visible item in viewport */
+  const rangeStart = scrollTopPos.value;
+  const rangeEnd = rangeStart + viewContainerHeight;
+
+  /* calculate start and end index of items to render */
+  const fromItemIndex = Math.floor(rangeStart / itemHeight);
+  const toItemIndex = Math.ceil(rangeEnd / itemHeight);
+
+  let fromItem = Math.max(fromItemIndex - overscan, 0);
+  let toItem = Math.min(toItemIndex, itemsLength.value - 1);
+
   const virtualEntries = [];
-  for (let index = startIndex; index <= endIndex; index++) {
-    virtualEntries.push({
-      index,
-      offsetTop: index * itemHeight,
-    });
+  for (let i = fromItemIndex; i <= toItemIndex; i++) {
+    virtualEntries.push({ index: i, offsetTop: i * itemHeight });
   }
+
+  console.log(
+    "proxyItemsToRender: ",
+    fromItemIndex,
+    toItemIndex,
+    toItemIndex - fromItemIndex,
+  );
   return virtualEntries;
 });
 
 const handleScroll = () => {
   if (!scrollElementRef.value) return;
 
-  scrollTop.value = scrollElementRef.value.scrollTop;
-  state.setScrollTop(scrollTop.value);
+  scrollTopPos.value = scrollElementRef.value.scrollTop;
+  state.setScrollTop(scrollElementRef.value.scrollTop);
 
   isScrolling.value = true;
+
   state.debugValue["isScrolling"] = true;
 
   if (typeof scrollingTimeoutId === "number") {
@@ -73,9 +76,9 @@ const handleScroll = () => {
 </script>
 
 <template>
-  <div ref="scrollElementRef">
-  <!-- <div ref="scrollElementRef" @scroll="handleScroll"> -->
-    <table class="table-container">
+  {{ state }} len_{{ items.length }} {{ viewContainerHeight }}
+  <div class="table-container overflow-auto max-h-30rem" ref="scrollElementRef" @scroll="handleScroll">
+    <table>
       <thead>
         <tr>
           <th scope="col">Id</th>
@@ -84,8 +87,8 @@ const handleScroll = () => {
           <th scope="col">Object</th>
         </tr>
       </thead>
-      <tbody>
-        <tr v-for="prx of proxyEntriesToRender" :key="prx.index">
+      <tbody >
+        <tr v-for="prx of proxyItemsToRender" :key="prx.index">
           <td>{{ items[prx.index].id }}</td>
           <td>{{ items[prx.index].text }}</td>
           <td>{{ prx }}</td>
@@ -101,7 +104,7 @@ const handleScroll = () => {
   width: 100%;
   height: 100%;
   border: 1px solid #ddd;
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
   /* ограничения размера, что бы не выступало */
   overflow-y: auto;
 }

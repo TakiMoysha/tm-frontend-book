@@ -24,11 +24,6 @@ const getItems = async () => {
 
 const meta = {
   args: defaultArgs,
-  decorators: [
-    () => ({
-      template: '<div class="h-30rem overflow-auto"><story/></div>',
-    }),
-  ],
   loaders: [
     async () => ({
       mockItems: await getItems(),
@@ -41,6 +36,7 @@ type Story = StoryObj<typeof meta>;
 
 // ========================================================
 export const SimpleVirtualScroll: Story = {
+  tags: ["dev"],
   render: (args, { loaded: { mockItems } }) => ({
     components: { SimpleVScroll },
     setup() {
